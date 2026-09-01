@@ -1,4 +1,4 @@
-<html data-type="html" data-identifier="a89fe02d-6546-4bb6-833d-30b8a4e86609" data-title="Dashboard InfluencIA - Encuesta" data-version="1" width="1200" height="1000" lang="es"><head></head><body>
+<html data-type="html" data-identifier="a89fe02d-6546-4bb6-833d-30b8a4e86609" data-title="Dashboard InfluencIA - Encuesta" data-version="2" width="1200" height="1000" lang="es"><head></head><body>
 
 
 
@@ -262,9 +262,10 @@
     return Object.entries(obj).sort((a, b) => b[1] - a[1]);
   }
 
-  function makeChart(ctx, type, labels, data, opts = {}) {
+  // Todos los gráficos ahora son de barras. "horizontal" = true usa indexAxis "y" (barras horizontales)
+  function makeBarChart(ctx, labels, data, horizontal = false) {
     return new Chart(ctx, {
-      type: type,
+      type: "bar",
       data: {
         labels: labels,
         datasets: [{
@@ -272,29 +273,33 @@
           backgroundColor: PALETTE,
           borderColor: "rgba(255,255,255,0.08)",
           borderWidth: 1,
-          borderRadius: type === "bar" ? 6 : 0
+          borderRadius: 6
         }]
       },
-      options: Object.assign({
+      options: {
+        indexAxis: horizontal ? "y" : "x",
         responsive: true,
         maintainAspectRatio: false,
         plugins: {
-          legend: {
-            display: type === "doughnut" || type === "pie",
-            position: "bottom",
-            labels: { color: "#dcdcf0", font: { size: 11 }, boxWidth: 12 }
-          },
+          legend: { display: false },
           tooltip: {
             backgroundColor: "#1a1c33",
             titleColor: "#fff",
             bodyColor: "#dcdcf0"
           }
         },
-        scales: (type === "bar") ? {
-          x: { ticks: { color: "#b7b9d1" }, grid: { color: "rgba(255,255,255,0.05)" } },
-          y: { ticks: { color: "#b7b9d1" }, grid: { color: "rgba(255,255,255,0.05)" } }
-        } : {}
-      }, opts)
+        scales: {
+          x: {
+            ticks: { color: "#b7b9d1", autoSkip: false },
+            grid: { color: "rgba(255,255,255,0.05)" }
+          },
+          y: {
+            ticks: { color: "#b7b9d1" },
+            grid: { color: "rgba(255,255,255,0.05)" },
+            beginAtZero: true
+          }
+        }
+      }
     });
   }
 
@@ -356,41 +361,40 @@
           Math.round((no / rows.length) * 100) + "%";
       }
 
-      // --- Gráfico 1: Plataforma más usada ---
+      // --- Gráfico 1: Plataforma más usada (barras verticales) ---
       const platformCounts = sortedEntries(countSingle(rows, colPlatform));
-      makeChart(
+      makeBarChart(
         document.getElementById("chartPlatform"),
-        "doughnut",
         platformCounts.map(e => e[0]),
-        platformCounts.map(e => e[1])
+        platformCounts.map(e => e[1]),
+        false
       );
 
-      // --- Gráfico 2: Sentimientos frente a influencers IA (multi-select) ---
+      // --- Gráfico 2: Sentimientos frente a influencers IA (barras horizontales, multi-select) ---
       const feelingsCounts = sortedEntries(countMulti(rows, colFeelings)).slice(0, 8);
-      makeChart(
+      makeBarChart(
         document.getElementById("chartFeelings"),
-        "bar",
         feelingsCounts.map(e => e[0]),
         feelingsCounts.map(e => e[1]),
-        { indexAxis: "y" }
+        true
       );
 
-      // --- Gráfico 3: Cambio de confianza si es IA ---
+      // --- Gráfico 3: Cambio de confianza si es IA (barras verticales) ---
       const trustCounts = sortedEntries(countSingle(rows, colTrust));
-      makeChart(
+      makeBarChart(
         document.getElementById("chartTrust"),
-        "bar",
         trustCounts.map(e => e[0].length > 28 ? e[0].slice(0, 28) + "…" : e[0]),
-        trustCounts.map(e => e[1])
+        trustCounts.map(e => e[1]),
+        false
       );
 
-      // --- Gráfico 4: Futuro de figuras políticas con IA ---
+      // --- Gráfico 4: Futuro de figuras políticas con IA (barras verticales) ---
       const futureCounts = sortedEntries(countSingle(rows, colFuture));
-      makeChart(
+      makeBarChart(
         document.getElementById("chartFuture"),
-        "pie",
         futureCounts.map(e => e[0]),
-        futureCounts.map(e => e[1])
+        futureCounts.map(e => e[1]),
+        false
       );
 
       document.getElementById("loadingState").style.display = "none";
