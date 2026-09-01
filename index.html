@@ -1,0 +1,412 @@
+<html data-type="html" data-identifier="a89fe02d-6546-4bb6-833d-30b8a4e86609" data-title="Dashboard InfluencIA - Encuesta" data-version="1" width="1200" height="1000" lang="es"><head></head><body>
+
+
+
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Dashboard InfluencIA</title>
+<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<style>
+  * { box-sizing: border-box; }
+  body {
+    margin: 0;
+    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+    background: linear-gradient(135deg, #0f1120 0%, #1a1c33 100%);
+    color: #f1f1f6;
+    min-height: 100vh;
+    padding: 24px;
+  }
+  header {
+    max-width: 1200px;
+    margin: 0 auto 28px auto;
+    text-align: center;
+  }
+  #mainTitle {
+    font-size: 2rem;
+    margin: 0 0 8px 0;
+    background: linear-gradient(90deg, #8a5cf6, #ec4899);
+    -webkit-background-clip: text;
+    background-clip: text;
+    color: transparent;
+    font-weight: 800;
+  }
+  #subtitle {
+    font-size: 1.05rem;
+    color: #b7b9d1;
+    max-width: 780px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  #tag {
+    display: inline-block;
+    margin-top: 10px;
+    background: rgba(138, 92, 246, 0.15);
+    border: 1px solid rgba(138, 92, 246, 0.4);
+    color: #c9b6ff;
+    padding: 4px 12px;
+    border-radius: 20px;
+    font-size: 0.78rem;
+    letter-spacing: 0.5px;
+  }
+
+  #loadingState, #errorState {
+    max-width: 600px;
+    margin: 60px auto;
+    text-align: center;
+    color: #b7b9d1;
+  }
+  .spinner {
+    width: 46px;
+    height: 46px;
+    border: 4px solid rgba(255,255,255,0.15);
+    border-top-color: #8a5cf6;
+    border-radius: 50%;
+    margin: 0 auto 16px auto;
+    animation: spin 0.9s linear infinite;
+  }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  #errorState { color: #ff8a8a; display: none; }
+
+  #dashboardContent { display: none; max-width: 1200px; margin: 0 auto; }
+
+  .stats-grid {
+    display: grid;
+    grid-template-columns: repeat(4, 1fr);
+    gap: 16px;
+    margin-bottom: 28px;
+  }
+  .stat-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 14px;
+    padding: 18px;
+    text-align: center;
+  }
+  .stat-card .stat-value {
+    font-size: 1.7rem;
+    font-weight: 800;
+    color: #a78bfa;
+  }
+  .stat-card .stat-label {
+    font-size: 0.8rem;
+    color: #9698b8;
+    margin-top: 4px;
+  }
+
+  .charts-grid {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+    gap: 20px;
+  }
+  .chart-card {
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 18px;
+    min-height: 380px;
+    display: flex;
+    flex-direction: column;
+  }
+  .chart-card h3 {
+    margin: 0 0 4px 0;
+    font-size: 1.02rem;
+    color: #f1f1f6;
+  }
+  .chart-card p {
+    margin: 0 0 14px 0;
+    font-size: 0.78rem;
+    color: #9698b8;
+  }
+  .chart-wrap {
+    position: relative;
+    flex: 1;
+    min-height: 260px;
+  }
+
+  footer {
+    max-width: 1200px;
+    margin: 32px auto 0 auto;
+    text-align: center;
+    color: #7d7fa0;
+    font-size: 0.75rem;
+  }
+
+  @media (max-width: 900px) {
+    .stats-grid { grid-template-columns: repeat(2, 1fr); }
+    .charts-grid { grid-template-columns: 1fr; }
+  }
+  @media (max-width: 500px) {
+    .stats-grid { grid-template-columns: 1fr; }
+    #mainTitle { font-size: 1.5rem; }
+  }
+</style>
+
+
+
+<header>
+  <h1 id="mainTitle">InfluencIA: Política, IA y Confianza Digital</h1>
+  <p id="subtitle">Un análisis de la encuesta propia sobre cómo audiencias jóvenes en Argentina perciben, consumen y confían en figuras políticas e influencers construidos con Inteligencia Artificial en redes sociales.</p>
+  <span id="tag">Taller de Comunicación Transmedia · UBA</span>
+</header>
+
+<div id="loadingState">
+  <div class="spinner"></div>
+  <p id="loadingText">Cargando datos de la encuesta desde Google Sheets...</p>
+</div>
+
+<div id="errorState">
+  <p id="errorText">⚠️ No se pudieron cargar los datos. Verificá la URL del CSV o tu conexión.</p>
+</div>
+
+<div id="dashboardContent">
+
+  <div class="stats-grid">
+    <div class="stat-card">
+      <div class="stat-value" id="statTotal">-</div>
+      <div class="stat-label">Respuestas totales</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="statDetectedAI">-</div>
+      <div class="stat-label">Ya identificaron contenido de IA</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="statChangePerception">-</div>
+      <div class="stat-label">Cambiaría su confianza si es IA</div>
+    </div>
+    <div class="stat-card">
+      <div class="stat-value" id="statNoRepresent">-</div>
+      <div class="stat-label">Cree que NO podría representarlo/a una IA</div>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+
+    <div class="chart-card">
+      <h3 id="chartTitle1">📱 Plataforma de mayor consumo</h3>
+      <p id="chartDesc1">A quiénes está dirigido el contenido: red social usada con mayor frecuencia por los/as encuestados/as.</p>
+      <div class="chart-wrap"><canvas id="chartPlatform"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <h3 id="chartTitle2">🤖 Sentimientos frente a influencers de IA</h3>
+      <p id="chartDesc2">Cómo se sienten los/as encuestados/as ante la presencia creciente de influencers creados con IA (respuesta múltiple).</p>
+      <div class="chart-wrap"><canvas id="chartFeelings"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <h3 id="chartTitle3">🎭 ¿Necesita ser una persona real?</h3>
+      <p id="chartDesc3">Si descubrieran que un influencer de confianza fue creado con IA, ¿cambiaría su percepción sobre el contenido?</p>
+      <div class="chart-wrap"><canvas id="chartTrust"></canvas></div>
+    </div>
+
+    <div class="chart-card">
+      <h3 id="chartTitle4">🔮 Futuro de las figuras políticas con IA</h3>
+      <p id="chartDesc4">¿Creen que una figura política completamente artificial podría tener más influencia que un político humano?</p>
+      <div class="chart-wrap"><canvas id="chartFuture"></canvas></div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  <p id="footerNote">Fuente: Encuesta propia "InfluencIA" — Datos leídos en vivo desde Google Sheets (pestaña "form").</p>
+</footer>
+
+<script>
+  const CSV_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPiVdb5Txiu2bWaI7dNQ_KD_dhpDVATCDSbFM6PzIMzzRehkxAYS5E80EIpy4Zx4eh36_xxYCWblay/pub?output=csv";
+  const FORM_GID = "1027244575";
+  const FORM_URL = CSV_BASE + "&gid=" + FORM_GID;
+
+  const PALETTE = ["#8a5cf6", "#ec4899", "#22d3ee", "#f59e0b", "#34d399", "#f87171", "#a78bfa", "#60a5fa", "#fb923c", "#f472b6"];
+
+  function normalize(str) {
+    return (str || "")
+      .toString()
+      .toLowerCase()
+      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
+      .replace(/[¿?¡!.,]/g, "")
+      .trim();
+  }
+
+  function findColumn(headers, fragment) {
+    const nf = normalize(fragment);
+    return headers.find(h => normalize(h).includes(nf)) || null;
+  }
+
+  function countSingle(rows, col) {
+    const counts = {};
+    if (!col) return counts;
+    rows.forEach(r => {
+      const val = (r[col] || "").toString().trim();
+      if (!val) return;
+      counts[val] = (counts[val] || 0) + 1;
+    });
+    return counts;
+  }
+
+  function countMulti(rows, col) {
+    const counts = {};
+    if (!col) return counts;
+    rows.forEach(r => {
+      const val = (r[col] || "").toString().trim();
+      if (!val) return;
+      val.split(",").map(s => s.trim()).filter(Boolean).forEach(opt => {
+        counts[opt] = (counts[opt] || 0) + 1;
+      });
+    });
+    return counts;
+  }
+
+  function sortedEntries(obj) {
+    return Object.entries(obj).sort((a, b) => b[1] - a[1]);
+  }
+
+  function makeChart(ctx, type, labels, data, opts = {}) {
+    return new Chart(ctx, {
+      type: type,
+      data: {
+        labels: labels,
+        datasets: [{
+          data: data,
+          backgroundColor: PALETTE,
+          borderColor: "rgba(255,255,255,0.08)",
+          borderWidth: 1,
+          borderRadius: type === "bar" ? 6 : 0
+        }]
+      },
+      options: Object.assign({
+        responsive: true,
+        maintainAspectRatio: false,
+        plugins: {
+          legend: {
+            display: type === "doughnut" || type === "pie",
+            position: "bottom",
+            labels: { color: "#dcdcf0", font: { size: 11 }, boxWidth: 12 }
+          },
+          tooltip: {
+            backgroundColor: "#1a1c33",
+            titleColor: "#fff",
+            bodyColor: "#dcdcf0"
+          }
+        },
+        scales: (type === "bar") ? {
+          x: { ticks: { color: "#b7b9d1" }, grid: { color: "rgba(255,255,255,0.05)" } },
+          y: { ticks: { color: "#b7b9d1" }, grid: { color: "rgba(255,255,255,0.05)" } }
+        } : {}
+      }, opts)
+    });
+  }
+
+  async function loadDashboard() {
+    try {
+      const response = await fetch(FORM_URL);
+      if (!response.ok) throw new Error("HTTP " + response.status);
+      const csvText = await response.text();
+
+      const parsed = Papa.parse(csvText, {
+        header: true,
+        skipEmptyLines: true
+      });
+
+      let rows = parsed.data;
+      const headers = parsed.meta.fields || [];
+
+      // Filtramos filas completamente vacías
+      rows = rows.filter(r => Object.values(r).some(v => (v || "").toString().trim() !== ""));
+
+      if (rows.length === 0) throw new Error("Sin filas de datos");
+
+      // --- Localizar columnas relevantes de forma flexible ---
+      const colPlatform   = findColumn(headers, "red social que utilizas con mayor frecuencia");
+      const colFeelings   = findColumn(headers, "como te sentis frente a la presencia cada vez mayor de influencers");
+      const colTrust      = findColumn(headers, "imagina un influencer en el que confies");
+      const colFuture     = findColumn(headers, "crees que en el futuro seria posible que una figura politica completamente artificial");
+      const colDetectedAI = findColumn(headers, "alguna vez identificaste que una imagen, video o perfil");
+      const colRepresent  = findColumn(headers, "crees que una figura politica creada con ia podria llegar a representarte");
+
+      // --- KPIs ---
+      document.getElementById("statTotal").textContent = rows.length;
+
+      if (colDetectedAI) {
+        const c = countSingle(rows, colDetectedAI);
+        const yes = c["Sí"] || c["Si"] || 0;
+        document.getElementById("statDetectedAI").textContent =
+          Math.round((yes / rows.length) * 100) + "%";
+      }
+
+      if (colTrust) {
+        const c = countSingle(rows, colTrust);
+        let changed = 0;
+        Object.entries(c).forEach(([k, v]) => {
+          if (normalize(k).startsWith("si cambiaria")) changed += v;
+        });
+        document.getElementById("statChangePerception").textContent =
+          Math.round((changed / rows.length) * 100) + "%";
+      }
+
+      if (colRepresent) {
+        const c = countSingle(rows, colRepresent);
+        let no = 0;
+        Object.entries(c).forEach(([k, v]) => {
+          const nk = normalize(k);
+          if (nk.startsWith("no")) no += v;
+        });
+        document.getElementById("statNoRepresent").textContent =
+          Math.round((no / rows.length) * 100) + "%";
+      }
+
+      // --- Gráfico 1: Plataforma más usada ---
+      const platformCounts = sortedEntries(countSingle(rows, colPlatform));
+      makeChart(
+        document.getElementById("chartPlatform"),
+        "doughnut",
+        platformCounts.map(e => e[0]),
+        platformCounts.map(e => e[1])
+      );
+
+      // --- Gráfico 2: Sentimientos frente a influencers IA (multi-select) ---
+      const feelingsCounts = sortedEntries(countMulti(rows, colFeelings)).slice(0, 8);
+      makeChart(
+        document.getElementById("chartFeelings"),
+        "bar",
+        feelingsCounts.map(e => e[0]),
+        feelingsCounts.map(e => e[1]),
+        { indexAxis: "y" }
+      );
+
+      // --- Gráfico 3: Cambio de confianza si es IA ---
+      const trustCounts = sortedEntries(countSingle(rows, colTrust));
+      makeChart(
+        document.getElementById("chartTrust"),
+        "bar",
+        trustCounts.map(e => e[0].length > 28 ? e[0].slice(0, 28) + "…" : e[0]),
+        trustCounts.map(e => e[1])
+      );
+
+      // --- Gráfico 4: Futuro de figuras políticas con IA ---
+      const futureCounts = sortedEntries(countSingle(rows, colFuture));
+      makeChart(
+        document.getElementById("chartFuture"),
+        "pie",
+        futureCounts.map(e => e[0]),
+        futureCounts.map(e => e[1])
+      );
+
+      document.getElementById("loadingState").style.display = "none";
+      document.getElementById("dashboardContent").style.display = "block";
+
+    } catch (err) {
+      console.error(err);
+      document.getElementById("loadingState").style.display = "none";
+      document.getElementById("errorState").style.display = "block";
+      document.getElementById("errorText").textContent =
+        "⚠️ No se pudieron cargar los datos (" + err.message + "). Verificá que la hoja esté publicada como CSV.";
+    }
+  }
+
+  loadDashboard();
+</script>
+
+
+</body></html>
