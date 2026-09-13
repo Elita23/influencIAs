@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>influencIA - Dashboard</title>
+<style>
+:root{
+  --bg:#0f172a; --panel:#1e293b; --card:#111827;
+  --text:#f8fafc; --muted:#cbd5e1; --accent:#8b5cf6;
+}
+*{box-sizing:border-box}
+body{
+  margin:0; font-family:Segoe UI,Arial,sans-serif;
+  background:linear-gradient(135deg,#0f172a,#1e1b4b);
+  color:var(--text); padding:28px;
+}
+.container{max-width:1100px;margin:auto}
+.hero{
+  background:rgba(255,255,255,.05);
+  border:1px solid rgba(255,255,255,.08);
+  border-radius:20px; padding:28px; margin-bottom:22px;
+}
+h1{margin:0;font-size:40px}
+.sub{color:#ddd;margin-top:8px}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:14px}
+.card{
+  background:var(--card); border-radius:16px; padding:18px;
+  border:1px solid rgba(255,255,255,.08);
+}
+.label{color:#94a3b8;font-size:13px}
+.value{font-size:26px;font-weight:700;margin-top:4px}
+.section{margin-top:26px}
+.section h2{margin-bottom:14px}
+.diagram{
+  background:var(--panel); border-radius:18px; padding:20px;
+}
+.flow{display:flex;align-items:center;justify-content:space-between;gap:8px;flex-wrap:wrap}
+.node{
+  flex:1; min-width:130px; text-align:center;
+  background:#312e81; padding:16px 12px; border-radius:14px;
+}
+.arrow{font-size:24px;color:#a78bfa}
+.insight{
+  margin-top:16px; background:#27272a; border-left:4px solid var(--accent);
+  padding:14px 16px; border-radius:10px; color:#e5e7eb; line-height:1.6;
+}
+footer{margin-top:28px;color:#94a3b8;font-size:13px;text-align:center}
+@media (max-width:700px){.flow{flex-direction:column}.arrow{transform:rotate(90deg)}}
+</style>
+</head>
+<body>
+<div class="container">
+  <section class="hero">
+    <h1>influencIA</h1>
+    <div class="sub">Las nuevas influencias en la virtualidad política</div>
+    <p>Dashboard sobre influencers políticas creadas con inteligencia artificial vinculadas a La Libertad Avanza y su recepción entre jóvenes argentinos.</p>
+  </section>
+
+  <section class="section">
+    <h2>Ficha metodológica</h2>
+    <div class="grid">
+      <div class="card"><div class="label">Muestra</div><div class="value">62</div><div>personas</div></div>
+      <div class="card"><div class="label">Edad</div><div class="value">18–29</div><div>años</div></div>
+      <div class="card"><div class="label">Lugar</div><div class="value">Argentina</div></div>
+      <div class="card"><div class="label">Fecha</div><div class="value">Ago–Sep</div><div>2026</div></div>
+    </div>
+  </section>
+
+  <section class="section">
+    <h2>Recorrido del usuario</h2>
+    <div class="diagram">
+      <div class="flow">
+        <div class="node">📱<br><strong>TikTok / Instagram</strong><br><small>Contenido político IA</small></div>
+        <div class="arrow">→</div>
+        <div class="node">🤖<br><strong>Algoritmo</strong><br><small>Recomendación y ranking</small></div>
+        <div class="arrow">→</div>
+        <div class="node">👤<br><strong>Usuario</strong><br><small>Visualiza el contenido</small></div>
+        <div class="arrow">→</div>
+        <div class="node">❤️<br><strong>Interacción</strong><br><small>Like · Comentario · Compartir</small></div>
+        <div class="arrow">→</div>
+        <div class="node">🔁<br><strong>Recomendación</strong><br><small>Mayor alcance algorítmico</small></div>
+      </div>
+      <div class="insight">
+        El recorrido evidencia cómo las plataformas priorizan contenidos con alta interacción. Cada acción del usuario alimenta nuevamente al algoritmo, aumentando la visibilidad de las influencers políticas creadas con IA.
+      </div>
+    </div>
+  </section>
+
+  <footer>TP Datos · influencIA · Dashboard en un único archivo HTML</footer>
+</div>
+</body>
+</html>
