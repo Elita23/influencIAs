@@ -1,4 +1,4 @@
-<html data-type="html" data-identifier="a89fe02d-6546-4bb6-833d-30b8a4e86609" data-title="Dashboard InfluencIA - Encuesta" data-version="5" width="1200" height="1000" lang="es"><head></head><body>
+<html data-type="html" data-identifier="a89fe02d-6546-4bb6-833d-30b8a4e86609" data-title="Dashboard InfluencIA - Encuesta" data-version="7" width="1200" height="1400" lang="es"><head></head><body>
 
 
 
@@ -9,56 +9,330 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
   * { box-sizing: border-box; }
-  body {
+  html, body {
     margin: 0;
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background: linear-gradient(135deg, #0f1120 0%, #1a1c33 100%);
+    background: #0f1120;
     color: #f1f1f6;
-    min-height: 100vh;
-    padding: 24px;
-  }
-  header {
-    max-width: 1200px;
-    margin: 0 auto 32px auto;
-    text-align: center;
-  }
-  #mainTitle {
-    font-size: clamp(2.4rem, 5vw, 3.6rem);
-    line-height: 1.1;
-    margin: 0 0 14px 0;
-    background: linear-gradient(90deg, #8a5cf6, #ec4899);
-    -webkit-background-clip: text;
-    background-clip: text;
-    color: transparent;
-    font-weight: 800;
-  }
-  #subtitle {
-    font-size: 1.1rem;
-    color: #b7b9d1;
-    max-width: 780px;
-    margin: 0 auto;
-    line-height: 1.55;
   }
 
-  .intro {
-    max-width: 1200px;
-    margin: 0 auto 32px auto;
-    text-align: left;
-    padding-bottom: 24px;
-    border-bottom: 1px solid rgba(255,255,255,0.08);
+  /* ============ FLOATING BACKGROUND SHAPES (reusable) ============ */
+  @keyframes floatMove {
+    0%   { transform: translate(0px, 0px) rotate(0deg); }
+    25%  { transform: translate(14px, -18px) rotate(6deg); }
+    50%  { transform: translate(-10px, 10px) rotate(-4deg); }
+    75%  { transform: translate(-16px, -8px) rotate(3deg); }
+    100% { transform: translate(0px, 0px) rotate(0deg); }
   }
-  .intro h2 {
-    margin: 0 0 12px 0;
-    font-size: clamp(1.6rem, 3vw, 2.2rem);
-    font-weight: 800;
-    color: #c9b6ff;
+  @keyframes floatMoveSlow {
+    0%   { transform: translate(0px, 0px) rotate(0deg); }
+    33%  { transform: translate(-20px, 16px) rotate(-8deg); }
+    66%  { transform: translate(18px, -14px) rotate(5deg); }
+    100% { transform: translate(0px, 0px) rotate(0deg); }
   }
-  .intro p {
-    margin: 0;
-    max-width: 820px;
-    font-size: 0.98rem;
-    line-height: 1.65;
-    color: #d3d4e6;
+  .float-shape {
+    position: absolute;
+    pointer-events: none;
+    z-index: 1;
+  }
+  .float-sq { width: 20px; height: 20px; }
+  .float-circle {
+    width: 260px;
+    height: 260px;
+    border-radius: 50%;
+    opacity: 0.85;
+  }
+
+  /* ============ HERO GLITCH SECTION ============ */
+  .hero {
+    position: relative;
+    overflow: hidden;
+    background: repeating-linear-gradient(0deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 1px, transparent 1px, transparent 40px),
+                repeating-linear-gradient(90deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 1px, transparent 1px, transparent 40px),
+                #f4f3ef;
+    color: #0c0c0c;
+    padding: 46px 32px 90px 32px;
+  }
+
+  .hero .float-sq.c1 { top: 26px; left: 40px; background: #ff2fb0; animation: floatMove 7s ease-in-out infinite; }
+  .hero .float-sq.c2 { top: 60px; left: 74px; background: #22d3ee; animation: floatMoveSlow 9s ease-in-out infinite; }
+  .hero .float-sq.c3 { top: 90px; left: 44px; background: #ffd400; animation: floatMove 6s ease-in-out infinite; }
+  .hero .float-sq.c4 { top: 30px; right: 60px; background: #22d3ee; animation: floatMoveSlow 8s ease-in-out infinite; }
+  .hero .float-sq.c5 { top: 130px; right: 110px; width: 14px; height: 14px; background: #ffd400; animation: floatMove 5s ease-in-out infinite; }
+
+  .star {
+    position: absolute;
+    top: 34px;
+    right: 34px;
+    font-size: 2.6rem;
+    color: #111;
+    z-index: 1;
+    animation: floatMoveSlow 10s ease-in-out infinite;
+  }
+
+  .eyebrow {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    font-size: 0.78rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #444;
+    font-weight: 700;
+    margin-bottom: 6px;
+  }
+
+  .glitch-wrap {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    margin: 0 0 18px 0;
+  }
+  .glitch {
+    position: relative;
+    display: inline-block;
+    font-size: clamp(2.8rem, 9vw, 6.5rem);
+    font-weight: 900;
+    letter-spacing: -2px;
+    color: #0c0c0c;
+    font-family: 'Segoe UI', Arial, sans-serif;
+    text-transform: uppercase;
+  }
+  .glitch::before,
+  .glitch::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 0; left: 0;
+    width: 100%; height: 100%;
+  }
+  .glitch::before {
+    color: #ec1cb3;
+    left: 3px;
+    clip-path: inset(0 0 55% 0);
+    animation: glitchTop 2.6s infinite linear alternate-reverse;
+  }
+  .glitch::after {
+    color: #22d3ee;
+    left: -3px;
+    clip-path: inset(55% 0 0 0);
+    animation: glitchBottom 2.2s infinite linear alternate-reverse;
+  }
+  @keyframes glitchTop {
+    0%   { clip-path: inset(0 0 78% 0); transform: translate(0px,0px); }
+    20%  { clip-path: inset(0 0 60% 0); transform: translate(-3px,-1px); }
+    40%  { clip-path: inset(0 0 40% 0); transform: translate(3px,1px); }
+    60%  { clip-path: inset(0 0 65% 0); transform: translate(-2px,0px); }
+    80%  { clip-path: inset(0 0 50% 0); transform: translate(2px,1px); }
+    100% { clip-path: inset(0 0 78% 0); transform: translate(0px,0px); }
+  }
+  @keyframes glitchBottom {
+    0%   { clip-path: inset(75% 0 0 0); transform: translate(0px,0px); }
+    20%  { clip-path: inset(55% 0 0 0); transform: translate(3px,1px); }
+    40%  { clip-path: inset(40% 0 0 0); transform: translate(-3px,-1px); }
+    60%  { clip-path: inset(60% 0 0 0); transform: translate(2px,0px); }
+    80%  { clip-path: inset(48% 0 0 0); transform: translate(-2px,1px); }
+    100% { clip-path: inset(75% 0 0 0); transform: translate(0px,0px); }
+  }
+  .glitch-tag {
+    position: relative;
+    z-index: 2;
+    text-align: center;
+    font-size: 0.72rem;
+    letter-spacing: 3px;
+    text-transform: uppercase;
+    color: #fff;
+    background: #0c0c0c;
+    display: inline-block;
+    padding: 4px 12px;
+    margin-bottom: 22px;
+  }
+  .tag-center-wrap { text-align: center; position: relative; z-index: 2; }
+
+  #subtitle {
+    position: relative;
+    z-index: 2;
+    font-size: 1.05rem;
+    color: #333;
+    max-width: 720px;
+    margin: 0 auto 40px auto;
+    line-height: 1.55;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  /* ---- Media block: image + social icons ---- */
+  .media-row {
+    position: relative;
+    z-index: 2;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    gap: 18px;
+    margin-bottom: 34px;
+  }
+  .influencer-frame {
+    position: relative;
+    width: 260px;
+    border: 4px solid #0c0c0c;
+    box-shadow: 10px 10px 0 #ec1cb3;
+    background: #000;
+    overflow: hidden;
+  }
+  .influencer-frame img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+  .influencer-caption {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 14px;
+    text-align: center;
+    z-index: 3;
+    font-family: Arial, 'Segoe UI', sans-serif;
+    font-weight: 900;
+    font-size: 1.55rem;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: #fff;
+    -webkit-text-stroke: 1px #000;
+    text-shadow: 3px 3px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
+    line-height: 1.1;
+    padding: 0 8px;
+  }
+  .social-col {
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    padding-top: 10px;
+  }
+  .social-badge {
+    width: 44px;
+    height: 44px;
+    border-radius: 12px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border: 3px solid #0c0c0c;
+    box-shadow: 4px 4px 0 #0c0c0c;
+  }
+  .social-badge svg { width: 22px; height: 22px; fill: #fff; }
+  .social-ig { background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af, #515bd4); }
+  .social-tt { background: #0c0c0c; }
+  .social-fb { background: #1877f2; }
+
+  /* ---- AI Prompt container ---- */
+  .prompt-wrap {
+    position: relative;
+    z-index: 2;
+    max-width: 640px;
+    margin: 0 auto;
+  }
+  .prompt-label {
+    font-size: 0.72rem;
+    letter-spacing: 2px;
+    text-transform: uppercase;
+    color: #333;
+    font-weight: 700;
+    margin-bottom: 8px;
+    text-align: center;
+  }
+  .prompt-box {
+    background: #0c0c0c;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 8px 8px 0 #22d3ee;
+    border: 2px solid #0c0c0c;
+  }
+  .prompt-topbar {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 10px 14px;
+    background: #1a1a1a;
+    border-bottom: 1px solid #2a2a2a;
+  }
+  .prompt-dot { width: 10px; height: 10px; border-radius: 50%; }
+  .dot-red { background: #ff5f56; }
+  .dot-yellow { background: #ffbd2e; }
+  .dot-green { background: #27c93f;}
+  .prompt-topbar span {
+    margin-left: 8px;
+    font-size: 0.7rem;
+    color: #888;
+    font-family: 'Courier New', monospace;
+  }
+  .prompt-body {
+    padding: 18px 18px 22px 18px;
+    font-family: 'Courier New', monospace;
+    font-size: 0.95rem;
+    color: #22e57a;
+    line-height: 1.6;
+  }
+  .prompt-body .prefix { color: #ec1cb3; }
+  .cursor {
+    display: inline-block;
+    width: 8px;
+    height: 1.1em;
+    background: #22e57a;
+    margin-left: 2px;
+    animation: blink 1s step-end infinite;
+    vertical-align: text-bottom;
+  }
+  @keyframes blink { 50% { opacity: 0; } }
+
+  .hero-swoosh {
+    position: absolute;
+    bottom: -60px;
+    right: -60px;
+    width: 320px;
+    height: 320px;
+    background: #ec1cb3;
+    border-radius: 50%;
+    z-index: 0;
+    opacity: 0.9;
+  }
+
+  @media (max-width: 640px) {
+    .media-row { flex-direction: column; align-items: center; }
+    .social-col { flex-direction: row; padding-top: 0; }
+    .influencer-frame { width: 220px; }
+  }
+
+  /* ============ RESTO DEL DASHBOARD (tema oscuro, con misma textura) ============ */
+  .dark-section {
+    position: relative;
+    overflow: hidden;
+    padding: 40px 24px 0 24px;
+    background: repeating-linear-gradient(0deg, rgba(255,255,255,0.045) 0px, rgba(255,255,255,0.045) 1px, transparent 1px, transparent 40px),
+                repeating-linear-gradient(90deg, rgba(255,255,255,0.045) 0px, rgba(255,255,255,0.045) 1px, transparent 1px, transparent 40px),
+                #0f1120;
+  }
+
+  /* Formas flotantes repetidas a lo largo del dashboard oscuro */
+  .dark-section .float-sq.d1 { top: 4%;  left: 6%;  background: #ff2fb0; animation: floatMove 8s ease-in-out infinite; }
+  .dark-section .float-sq.d2 { top: 18%; right: 8%; background: #22d3ee; animation: floatMoveSlow 10s ease-in-out infinite; }
+  .dark-section .float-sq.d3 { top: 42%; left: 4%;  background: #ffd400; width:16px; height:16px; animation: floatMove 7s ease-in-out infinite; }
+  .dark-section .float-sq.d4 { top: 60%; right: 5%; background: #ec1cb3; animation: floatMoveSlow 9s ease-in-out infinite; }
+  .dark-section .float-sq.d5 { top: 80%; left: 8%;  background: #22d3ee; width:14px; height:14px; animation: floatMove 6s ease-in-out infinite; }
+  .dark-section .float-circle.d6 {
+    top: 30%;
+    right: -120px;
+    background: rgba(236, 28, 179, 0.12);
+    animation: floatMoveSlow 14s ease-in-out infinite;
+  }
+  .dark-section .float-circle.d7 {
+    top: 68%;
+    left: -140px;
+    width: 220px; height: 220px;
+    background: rgba(34, 211, 238, 0.1);
+    animation: floatMove 12s ease-in-out infinite;
+  }
+
+  .content-layer {
+    position: relative;
+    z-index: 2;
   }
 
   #loadingState, #errorState {
@@ -141,6 +415,7 @@
     text-align: center;
     color: #7d7fa0;
     font-size: 0.75rem;
+    padding-bottom: 30px;
   }
 
   @media (max-width: 900px) {
@@ -154,80 +429,146 @@
 
 
 
-<header>
-  <h1 id="mainTitle">InfluencIA: Política, IA y Confianza Digital</h1>
-  <p id="subtitle">Un análisis de la encuesta propia sobre cómo audiencias jóvenes en Argentina perciben, consumen y confían en figuras políticas e influencers construidos con Inteligencia Artificial en redes sociales.</p>
-</header>
+<section class="hero">
+  <div class="float-shape float-sq c1"></div>
+  <div class="float-shape float-sq c2"></div>
+  <div class="float-shape float-sq c3"></div>
+  <div class="float-shape float-sq c4"></div>
+  <div class="float-shape float-sq c5"></div>
+  <div class="star">✦</div>
+  <div class="hero-swoosh"></div>
 
-<section class="intro">
-  <h2 id="introTitle">El caso de La Libertad Avanza</h2>
-  <p id="introText">
-    Este dashboard analiza el caso de las influencers políticas creadas con inteligencia artificial vinculadas a La Libertad Avanza. A partir de una encuesta propia y fuentes secundarias, exploramos cómo los jóvenes argentinos perciben la autenticidad, la confianza y los riesgos de estos avatares digitales en la comunicación política.
-  </p>
+  <p class="eyebrow">Taller de Comunicación Transmedia</p>
+
+  <div class="glitch-wrap">
+    <span class="glitch" data-text="InfluencIA">InfluencIA</span>
+  </div>
+
+  <div class="tag-center-wrap">
+    <span class="glitch-tag">Cualquier parecido con la realidad, ¿es pura coincidencia?</span>
+  </div>
+
+  <p id="subtitle">Un análisis de la encuesta propia sobre cómo audiencias jóvenes en Argentina perciben, consumen y confían en figuras políticas e influencers construidos con Inteligencia Artificial en redes sociales.</p>
+
+  <div class="media-row">
+    <div class="influencer-frame">
+      <img alt="Retrato de influencer política generada con IA, sola, estilo historia de redes sociales" data-src="Vertical social-media-story style portrait photograph. A single young woman fills the frame, standing outdoors in a park with green trees blurred softly behind her, no other people visible in the shot. She has long wavy blonde hair past her shoulders, fair skin, light eyes, a calm confident half-smile, wearing a cream chunky-knit cardigan over a beige tank top and a small gold pendant necklace. She looks directly at the camera, natural daylight, shallow depth of field, sharp focus on her face. Realistic phone-camera aesthetic, slightly oversaturated warm tones, portrait orientation, no text, no logos, no other people, no collage elements." imagemodel="imagen-4">
+      <div class="influencer-caption">LLOREN KUKAS</div>
+    </div>
+    <div class="social-col">
+      <div class="social-badge social-ig" title="Instagram">
+        <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 2.02.24 2.75.5a5.5 5.5 0 0 1 2 1.3 5.5 5.5 0 0 1 1.3 2c.26.73.45 1.58.5 2.75.07 1.25.07 1.65.07 4.85s0 3.6-.07 4.85c-.05 1.17-.24 2.02-.5 2.75a5.5 5.5 0 0 1-1.3 2 5.5 5.5 0 0 1-2 1.3c-.73.26-1.58.45-2.75.5-1.25.07-1.65.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-2.02-.24-2.75-.5a5.5 5.5 0 0 1-2-1.3 5.5 5.5 0 0 1-1.3-2c-.26-.73-.45-1.58-.5-2.75C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.85c.05-1.17.24-2.02.5-2.75a5.5 5.5 0 0 1 1.3-2 5.5 5.5 0 0 1 2-1.3c.73-.26 1.58-.45 2.75-.5C8.4 2.2 8.8 2.2 12 2.2zm0 3.05a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5zm0 2.16a4.6 4.6 0 1 1 0 9.2 4.6 4.6 0 0 1 0-9.2zm5.9-2.6a1.14 1.14 0 1 1 0 2.28 1.14 1.14 0 0 1 0-2.28z"></path></svg>
+      </div>
+      <div class="social-badge social-tt" title="TikTok">
+        <svg viewBox="0 0 24 24"><path d="M16.5 2h-3v13.6a3.1 3.1 0 1 1-2.2-2.97V9.4a6.3 6.3 0 1 0 5.2 6.2V9.3c1.1.9 2.4 1.4 3.9 1.4V7.5c-2.1 0-3.9-1.7-3.9-3.9V2z"></path></svg>
+      </div>
+      <div class="social-badge social-fb" title="Facebook">
+        <svg viewBox="0 0 24 24"><path d="M13.5 21v-7.2h2.4l.45-2.8h-2.85V9.2c0-.8.23-1.35 1.4-1.35h1.5V5.35C15.83 5.25 14.95 5.2 14 5.2c-2.4 0-4.05 1.46-4.05 4.15v2.65H7.5v2.8h2.45V21h3.55z"></path></svg>
+      </div>
+    </div>
+  </div>
+
+  <div class="prompt-wrap">
+    <p class="prompt-label">Prompt utilizado para generar el avatar</p>
+    <div class="prompt-box">
+      <div class="prompt-topbar">
+        <div class="prompt-dot dot-red"></div>
+        <div class="prompt-dot dot-yellow"></div>
+        <div class="prompt-dot dot-green"></div>
+        <span>generador-avatar-ia.exe</span>
+      </div>
+      <div class="prompt-body">
+        <span class="prefix">&gt;</span> Rubia tetona, cara perfecta, mujer perfecta, bardea a los kukas.<span class="cursor"></span>
+      </div>
+    </div>
+  </div>
+
 </section>
 
-<div id="loadingState">
-  <div class="spinner"></div>
-  <p id="loadingText">Cargando datos de la encuesta desde Google Sheets...</p>
-</div>
+<div class="dark-section">
 
-<div id="errorState">
-  <p id="errorText">⚠️ No se pudieron cargar los datos. Verificá la URL del CSV o tu conexión.</p>
-</div>
+  <div class="float-shape float-sq d1"></div>
+  <div class="float-shape float-sq d2"></div>
+  <div class="float-shape float-sq d3"></div>
+  <div class="float-shape float-sq d4"></div>
+  <div class="float-shape float-sq d5"></div>
+  <div class="float-shape float-circle d6"></div>
+  <div class="float-shape float-circle d7"></div>
 
-<div id="dashboardContent">
+  <div class="content-layer">
 
-  <div class="stats-grid">
-    <div class="stat-card">
-      <div class="stat-value" id="statTotal">-</div>
-      <div class="stat-label">Respuestas totales</div>
+    <section class="intro">
+      <h2 id="introTitle" style="font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight:800; color:#c9b6ff; margin-bottom:12px;">El caso de La Libertad Avanza</h2>
+      <p id="introText" style="max-width:820px; font-size:0.98rem; line-height:1.65; color:#d3d4e6; margin: 0 auto 32px auto;">
+        Este dashboard analiza el caso de las influencers políticas creadas con inteligencia artificial vinculadas a La Libertad Avanza. A partir de una encuesta propia y fuentes secundarias, exploramos cómo los jóvenes argentinos perciben la autenticidad, la confianza y los riesgos de estos avatares digitales en la comunicación política.
+      </p>
+    </section>
+
+    <div id="loadingState">
+      <div class="spinner"></div>
+      <p id="loadingText">Cargando datos de la encuesta desde Google Sheets...</p>
     </div>
-    <div class="stat-card">
-      <div class="stat-value" id="statDetectedAI">-</div>
-      <div class="stat-label">Ya identificaron contenido de IA</div>
+
+    <div id="errorState">
+      <p id="errorText">⚠️ No se pudieron cargar los datos. Verificá la URL del CSV o tu conexión.</p>
     </div>
-    <div class="stat-card">
-      <div class="stat-value" id="statChangePerception">-</div>
-      <div class="stat-label">Cambiaría su confianza si es IA</div>
+
+    <div id="dashboardContent">
+
+      <div class="stats-grid">
+        <div class="stat-card">
+          <div class="stat-value" id="statTotal">-</div>
+          <div class="stat-label">Respuestas totales</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="statDetectedAI">-</div>
+          <div class="stat-label">Ya identificaron contenido de IA</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="statChangePerception">-</div>
+          <div class="stat-label">Cambiaría su confianza si es IA</div>
+        </div>
+        <div class="stat-card">
+          <div class="stat-value" id="statNoRepresent">-</div>
+          <div class="stat-label">Cree que NO podría representarlo/a una IA</div>
+        </div>
+      </div>
+
+      <div class="charts-grid">
+
+        <div class="chart-card">
+          <h3 id="chartTitle1">📱 Plataforma de mayor consumo</h3>
+          <p id="chartDesc1">A quiénes está dirigido el contenido: red social usada con mayor frecuencia por los/as encuestados/as.</p>
+          <div class="chart-wrap"><canvas id="chartPlatform"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <h3 id="chartTitle2">🤖 Sentimientos frente a influencers de IA</h3>
+          <p id="chartDesc2">Cómo se sienten los/as encuestados/as ante la presencia creciente de influencers creados con IA (respuesta múltiple).</p>
+          <div class="chart-wrap"><canvas id="chartFeelings"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <h3 id="chartTitle3">🎭 ¿Necesita ser una persona real?</h3>
+          <p id="chartDesc3">Si descubrieran que un influencer de confianza fue creado con IA, ¿cambiaría su percepción sobre el contenido?</p>
+          <div class="chart-wrap"><canvas id="chartTrust"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <h3 id="chartTitle4">🔮 Futuro de las figuras políticas con IA</h3>
+          <p id="chartDesc4">¿Creen que una figura política completamente artificial podría tener más influencia que un político humano?</p>
+          <div class="chart-wrap"><canvas id="chartFuture"></canvas></div>
+        </div>
+
+      </div>
     </div>
-    <div class="stat-card">
-      <div class="stat-value" id="statNoRepresent">-</div>
-      <div class="stat-label">Cree que NO podría representarlo/a una IA</div>
-    </div>
+
+    <footer>
+      <p id="footerNote">Fuente: Encuesta propia "InfluencIA" — Datos leídos en vivo desde Google Sheets (pestaña "form").</p>
+    </footer>
+
   </div>
-
-  <div class="charts-grid">
-
-    <div class="chart-card">
-      <h3 id="chartTitle1">📱 Plataforma de mayor consumo</h3>
-      <p id="chartDesc1">A quiénes está dirigido el contenido: red social usada con mayor frecuencia por los/as encuestados/as.</p>
-      <div class="chart-wrap"><canvas id="chartPlatform"></canvas></div>
-    </div>
-
-    <div class="chart-card">
-      <h3 id="chartTitle2">🤖 Sentimientos frente a influencers de IA</h3>
-      <p id="chartDesc2">Cómo se sienten los/as encuestados/as ante la presencia creciente de influencers creados con IA (respuesta múltiple).</p>
-      <div class="chart-wrap"><canvas id="chartFeelings"></canvas></div>
-    </div>
-
-    <div class="chart-card">
-      <h3 id="chartTitle3">🎭 ¿Necesita ser una persona real?</h3>
-      <p id="chartDesc3">Si descubrieran que un influencer de confianza fue creado con IA, ¿cambiaría su percepción sobre el contenido?</p>
-      <div class="chart-wrap"><canvas id="chartTrust"></canvas></div>
-    </div>
-
-    <div class="chart-card">
-      <h3 id="chartTitle4">🔮 Futuro de las figuras políticas con IA</h3>
-      <p id="chartDesc4">¿Creen que una figura política completamente artificial podría tener más influencia que un político humano?</p>
-      <div class="chart-wrap"><canvas id="chartFuture"></canvas></div>
-    </div>
-
-  </div>
 </div>
-
-<footer>
-  <p id="footerNote">Fuente: Encuesta propia "InfluencIA" — Datos leídos en vivo desde Google Sheets (pestaña "form").</p>
-</footer>
 
 <script>
   const CSV_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPiVdb5Txiu2bWaI7dNQ_KD_dhpDVATCDSbFM6PzIMzzRehkxAYS5E80EIpy4Zx4eh36_xxYCWblay/pub?output=csv";
@@ -278,7 +619,6 @@
     return Object.entries(obj).sort((a, b) => b[1] - a[1]);
   }
 
-  // Todos los gráficos son de barras. "horizontal" = true usa indexAxis "y" (barras horizontales)
   function makeBarChart(ctx, labels, data, horizontal = false) {
     return new Chart(ctx, {
       type: "bar",
@@ -333,12 +673,10 @@
       let rows = parsed.data;
       const headers = parsed.meta.fields || [];
 
-      // Filtramos filas completamente vacías
       rows = rows.filter(r => Object.values(r).some(v => (v || "").toString().trim() !== ""));
 
       if (rows.length === 0) throw new Error("Sin filas de datos");
 
-      // --- Localizar columnas relevantes de forma flexible ---
       const colPlatform   = findColumn(headers, "red social que utilizas con mayor frecuencia");
       const colFeelings   = findColumn(headers, "como te sentis frente a la presencia cada vez mayor de influencers");
       const colTrust      = findColumn(headers, "imagina un influencer en el que confies");
@@ -346,7 +684,6 @@
       const colDetectedAI = findColumn(headers, "alguna vez identificaste que una imagen, video o perfil");
       const colRepresent  = findColumn(headers, "crees que una figura politica creada con ia podria llegar a representarte");
 
-      // --- KPIs ---
       document.getElementById("statTotal").textContent = rows.length;
 
       if (colDetectedAI) {
@@ -377,7 +714,6 @@
           Math.round((no / rows.length) * 100) + "%";
       }
 
-      // --- Gráfico 1: Plataforma más usada (barras verticales) ---
       const platformCounts = sortedEntries(countSingle(rows, colPlatform));
       makeBarChart(
         document.getElementById("chartPlatform"),
@@ -386,7 +722,6 @@
         false
       );
 
-      // --- Gráfico 2: Sentimientos frente a influencers IA (barras horizontales, multi-select) ---
       const feelingsCounts = sortedEntries(countMulti(rows, colFeelings)).slice(0, 8);
       makeBarChart(
         document.getElementById("chartFeelings"),
@@ -395,7 +730,6 @@
         true
       );
 
-      // --- Gráfico 3: Cambio de confianza si es IA (barras verticales) ---
       const trustCounts = sortedEntries(countSingle(rows, colTrust));
       makeBarChart(
         document.getElementById("chartTrust"),
@@ -404,7 +738,6 @@
         false
       );
 
-      // --- Gráfico 4: Futuro de figuras políticas con IA (barras verticales) ---
       const futureCounts = sortedEntries(countSingle(rows, colFuture));
       makeBarChart(
         document.getElementById("chartFuture"),
