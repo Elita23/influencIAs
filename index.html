@@ -1,4 +1,4 @@
-<html data-type="html" data-identifier="a89fe02d-6546-4bb6-833d-30b8a4e86609" data-title="Dashboard InfluencIA - Encuesta" data-version="2" width="1200" height="1000" lang="es"><head></head><body>
+<html data-type="html" data-identifier="a89fe02d-6546-4bb6-833d-30b8a4e86609" data-title="Dashboard InfluencIA - Encuesta" data-version="4" width="1200" height="1000" lang="es"><head></head><body>
 
 
 
@@ -9,12 +9,7 @@
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <style>
   * { box-sizing: border-box; }
-  body {<section class="intro">
-  <h2>El caso de La Libertad Avanza</h2>
-  <p>
-    Este dashboard analiza el surgimiento de influencers políticas creadas con inteligencia artificial vinculadas a La Libertad Avanza y cómo impactan en la confianza y el imaginario político de los jóvenes argentinos.
-  </p>
-</section>
+  body {
     margin: 0;
     font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
     background: linear-gradient(135deg, #0f1120 0%, #1a1c33 100%);
@@ -53,6 +48,26 @@
     border-radius: 20px;
     font-size: 0.78rem;
     letter-spacing: 0.5px;
+  }
+
+  .intro {
+    max-width: 900px;
+    margin: 0 auto 28px auto;
+    background: rgba(255,255,255,0.05);
+    border: 1px solid rgba(255,255,255,0.08);
+    border-radius: 16px;
+    padding: 22px 26px;
+  }
+  .intro h2 {
+    margin: 0 0 10px 0;
+    font-size: 1.2rem;
+    color: #c9b6ff;
+  }
+  .intro p {
+    margin: 0;
+    font-size: 0.92rem;
+    line-height: 1.6;
+    color: #d3d4e6;
   }
 
   #loadingState, #errorState {
@@ -154,6 +169,13 @@
   <p id="subtitle">Un análisis de la encuesta propia sobre cómo audiencias jóvenes en Argentina perciben, consumen y confían en figuras políticas e influencers construidos con Inteligencia Artificial en redes sociales.</p>
   <span id="tag">Taller de Comunicación Transmedia · UBA</span>
 </header>
+
+<section class="intro">
+  <h2 id="introTitle">El caso de La Libertad Avanza</h2>
+  <p id="introText">
+    Este dashboard analiza el caso de las influencers políticas creadas con inteligencia artificial vinculadas a La Libertad Avanza. A partir de una encuesta propia y fuentes secundarias, exploramos cómo los jóvenes argentinos perciben la autenticidad, la confianza y los riesgos de estos avatares digitales en la comunicación política.
+  </p>
+</section>
 
 <div id="loadingState">
   <div class="spinner"></div>
@@ -267,7 +289,7 @@
     return Object.entries(obj).sort((a, b) => b[1] - a[1]);
   }
 
-  // Todos los gráficos ahora son de barras. "horizontal" = true usa indexAxis "y" (barras horizontales)
+  // Todos los gráficos son de barras. "horizontal" = true usa indexAxis "y" (barras horizontales)
   function makeBarChart(ctx, labels, data, horizontal = false) {
     return new Chart(ctx, {
       type: "bar",
