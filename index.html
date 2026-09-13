@@ -1,4 +1,4 @@
-<html data-type="html" data-identifier="a89fe02d-6546-4bb6-833d-30b8a4e86609" data-title="Dashboard InfluencIA - Encuesta" data-version="4" width="1200" height="1000" lang="es"><head></head><body>
+<html data-type="html" data-identifier="a89fe02d-6546-4bb6-833d-30b8a4e86609" data-title="Dashboard InfluencIA - Encuesta" data-version="5" width="1200" height="1000" lang="es"><head></head><body>
 
 
 
@@ -19,12 +19,13 @@
   }
   header {
     max-width: 1200px;
-    margin: 0 auto 28px auto;
+    margin: 0 auto 32px auto;
     text-align: center;
   }
   #mainTitle {
-    font-size: 2rem;
-    margin: 0 0 8px 0;
+    font-size: clamp(2.4rem, 5vw, 3.6rem);
+    line-height: 1.1;
+    margin: 0 0 14px 0;
     background: linear-gradient(90deg, #8a5cf6, #ec4899);
     -webkit-background-clip: text;
     background-clip: text;
@@ -32,41 +33,31 @@
     font-weight: 800;
   }
   #subtitle {
-    font-size: 1.05rem;
+    font-size: 1.1rem;
     color: #b7b9d1;
     max-width: 780px;
     margin: 0 auto;
-    line-height: 1.5;
-  }
-  #tag {
-    display: inline-block;
-    margin-top: 10px;
-    background: rgba(138, 92, 246, 0.15);
-    border: 1px solid rgba(138, 92, 246, 0.4);
-    color: #c9b6ff;
-    padding: 4px 12px;
-    border-radius: 20px;
-    font-size: 0.78rem;
-    letter-spacing: 0.5px;
+    line-height: 1.55;
   }
 
   .intro {
-    max-width: 900px;
-    margin: 0 auto 28px auto;
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
-    padding: 22px 26px;
+    max-width: 1200px;
+    margin: 0 auto 32px auto;
+    text-align: left;
+    padding-bottom: 24px;
+    border-bottom: 1px solid rgba(255,255,255,0.08);
   }
   .intro h2 {
-    margin: 0 0 10px 0;
-    font-size: 1.2rem;
+    margin: 0 0 12px 0;
+    font-size: clamp(1.6rem, 3vw, 2.2rem);
+    font-weight: 800;
     color: #c9b6ff;
   }
   .intro p {
     margin: 0;
-    font-size: 0.92rem;
-    line-height: 1.6;
+    max-width: 820px;
+    font-size: 0.98rem;
+    line-height: 1.65;
     color: #d3d4e6;
   }
 
@@ -158,7 +149,6 @@
   }
   @media (max-width: 500px) {
     .stats-grid { grid-template-columns: 1fr; }
-    #mainTitle { font-size: 1.5rem; }
   }
 </style>
 
@@ -167,7 +157,6 @@
 <header>
   <h1 id="mainTitle">InfluencIA: Política, IA y Confianza Digital</h1>
   <p id="subtitle">Un análisis de la encuesta propia sobre cómo audiencias jóvenes en Argentina perciben, consumen y confían en figuras políticas e influencers construidos con Inteligencia Artificial en redes sociales.</p>
-  <span id="tag">Taller de Comunicación Transmedia · UBA</span>
 </header>
 
 <section class="intro">
