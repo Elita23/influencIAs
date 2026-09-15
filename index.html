@@ -1,706 +1,612 @@
-<html data-type="html" data-identifier="a89fe02d-6546-4bb6-833d-30b8a4e86609" data-title="Dashboard InfluencIA - Encuesta" data-version="15" width="1400" height="1400" lang="es"><head></head><body>
-
-
-
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Dashboard InfluencIA</title>
-<script src="https://cdn.jsdelivr.net/npm/papaparse@5.4.1/papaparse.min.js"></script>
-<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
+<html data-type="html" data-identifier="b6a814e8-670b-47f8-8d1d-ed55946771a3" data-title="Dashboard InfluencIA - Encuesta" data-version="23" imagemodel="imagen-4"><head></head><body style="margin:0;">
 <style>
-  * { box-sizing: border-box; }
-  html, body {
-    margin: 0;
-    font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-    background: #0f1120;
-    color: #f1f1f6;
-    overflow-x: hidden;
+  :root{
+    --magenta:#ec1cb3;
+    --cyan:#37d7f2;
+    --yellow:#f2c94c;
+    --purple:#7c6cf2;
+    --dark-bg:#14131f;
+    --dark-bg2:#1b1a2b;
+    --page-max: 1800px;
+  }
+  *{ box-sizing:border-box; }
+  html,body{
+    margin:0; padding:0; width:100%;
+    overflow-x:hidden;
+    font-family:'Helvetica Neue', Arial, sans-serif;
+    background:#f3f1ec;
+    color:#111;
+  }
+  a{ color:inherit; text-decoration:none; }
+
+  .grain-light, .grain-dark{ position:relative; }
+  .grain-light::after, .grain-dark::after{
+    content:"";
+    position:absolute; inset:0;
+    pointer-events:none;
+    background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='140' height='140'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2' stitchTiles='stitch'/><feColorMatrix type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 9 -3'/></filter><rect width='100%25' height='100%25' filter='url(%23n)'/></svg>");
+    z-index:1;
+  }
+  .grain-light::after{ mix-blend-mode:multiply; opacity:0.12; }
+  .grain-dark::after{ mix-blend-mode:screen; opacity:0.10; }
+
+  .hero, .dark-section{
+    background-image:
+      repeating-linear-gradient(0deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent 40px),
+      repeating-linear-gradient(90deg, rgba(0,0,0,0.05) 0px, rgba(0,0,0,0.05) 1px, transparent 1px, transparent 40px);
+  }
+  .dark-section{
+    background-color:var(--dark-bg);
+    background-image:
+      repeating-linear-gradient(0deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 40px),
+      repeating-linear-gradient(90deg, rgba(255,255,255,0.04) 0px, rgba(255,255,255,0.04) 1px, transparent 1px, transparent 40px);
   }
 
-  @keyframes floatMove {
-    0%   { transform: translate(0px, 0px) rotate(0deg); }
-    25%  { transform: translate(14px, -18px) rotate(6deg); }
-    50%  { transform: translate(-10px, 10px) rotate(-4deg); }
-    75%  { transform: translate(-16px, -8px) rotate(3deg); }
-    100% { transform: translate(0px, 0px) rotate(0deg); }
+  .float-shape{ position:absolute; z-index:1; pointer-events:none; }
+  .sq{ width:22px; height:22px; border-radius:4px; }
+  @keyframes floatMove{
+    0%{ transform:translate(0,0) rotate(0deg); }
+    50%{ transform:translate(14px,-18px) rotate(12deg); }
+    100%{ transform:translate(0,0) rotate(0deg); }
   }
-  @keyframes floatMoveSlow {
-    0%   { transform: translate(0px, 0px) rotate(0deg); }
-    33%  { transform: translate(-20px, 16px) rotate(-8deg); }
-    66%  { transform: translate(18px, -14px) rotate(5deg); }
-    100% { transform: translate(0px, 0px) rotate(0deg); }
+  @keyframes floatMoveSlow{
+    0%{ transform:translate(0,0) rotate(0deg); }
+    50%{ transform:translate(-16px,16px) rotate(-10deg); }
+    100%{ transform:translate(0,0) rotate(0deg); }
   }
-  .float-shape { position: absolute; pointer-events: none; z-index: 1; }
-  .float-sq { width: 20px; height: 20px; }
+  .float-a{ animation:floatMove 7s ease-in-out infinite; }
+  .float-b{ animation:floatMoveSlow 9s ease-in-out infinite; }
+  .float-c{ animation:floatMove 8s ease-in-out infinite; }
 
-  .grain-light::after,
-  .grain-dark::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    z-index: 6;
-    pointer-events: none;
-    background-repeat: repeat;
-    background-size: 180px 180px;
+  /* ---------- HERO ---------- */
+  .hero{
+    position:relative;
+    overflow:hidden;
+    padding:40px 4vw 220px;
+    z-index:2;
   }
-  .grain-light::after {
-    opacity: 0.12;
-    mix-blend-mode: multiply;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch' result='t'/%3E%3CfeColorMatrix in='t' type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 3.2 -1.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+  .eyebrow{
+    text-align:center;
+    font-size:0.9rem;
+    letter-spacing:3px;
+    font-weight:700;
+    color:#222;
+    margin-bottom:20px;
+    position:relative;
+    z-index:3;
   }
-  .grain-dark::after {
-    opacity: 0.1;
-    mix-blend-mode: screen;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n2'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch' result='t'/%3E%3CfeColorMatrix in='t' type='matrix' values='0 0 0 0 1  0 0 0 0 1  0 0 0 0 1  0 0 0 3.2 -1.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n2)'/%3E%3C/svg%3E");
-  }
-
-  .hero {
-    position: relative;
-    overflow: visible;
-    z-index: 2;
-    background: repeating-linear-gradient(0deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 1px, transparent 1px, transparent 40px),
-                repeating-linear-gradient(90deg, rgba(0,0,0,0.06) 0px, rgba(0,0,0,0.06) 1px, transparent 1px, transparent 40px),
-                #f4f3ef;
-    color: #0c0c0c;
-    padding: 40px 32px 130px 32px;
+  .hero-title-block{
+    text-align:center;
+    position:relative;
+    z-index:3;
+    margin-bottom:36px;
   }
 
-  .hero .float-sq.c1 { top: 26px; left: 40px; background: #ff2fb0; animation: floatMove 7s ease-in-out infinite; }
-  .hero .float-sq.c2 { top: 60px; left: 74px; background: #22d3ee; animation: floatMoveSlow 9s ease-in-out infinite; }
-  .hero .float-sq.c3 { top: 90px; left: 44px; background: #ffd400; animation: floatMove 6s ease-in-out infinite; }
-  .hero .float-sq.c4 { top: 30px; right: 60px; background: #22d3ee; animation: floatMoveSlow 8s ease-in-out infinite; }
-  .hero .float-sq.c5 { top: 130px; right: 110px; width: 14px; height: 14px; background: #ffd400; animation: floatMove 5s ease-in-out infinite; }
-
-  .star {
-    position: absolute;
-    top: 34px;
-    right: 34px;
-    font-size: 2.6rem;
-    color: #111;
-    z-index: 1;
-    animation: floatMoveSlow 10s ease-in-out infinite;
+  /* ===== TITLE: "Influenc" fijo en negro + "IA" con split animado ===== */
+  .glitch-title{
+    display:inline-block;
+    font-family:'Arial Black', Helvetica, sans-serif;
+    font-weight:900;
+    font-size:clamp(3.6rem, 8.5vw, 7.5rem);
+    letter-spacing:2px;
+    line-height:1;
+    color:#111;
+  }
+  .static-part{
+    color:#111;
+  }
+  .glitch-part{
+    position:relative;
+    display:inline-block;
+  }
+  .glitch-part .base{
+    color:#111;
+    text-shadow: 6px 6px 0 #000;
+    visibility:visible;
+  }
+  .glitch-part .layer{
+    position:absolute;
+    top:0; left:0;
+    width:100%; height:100%;
+    color:#111;
+    text-shadow:none;
+  }
+  .glitch-part .layer.top-half{
+    color:var(--magenta);
+    clip-path: polygon(0 0, 100% 0, 100% 50%, 0 50%);
+    animation: bounceUp 2.4s ease-in-out infinite;
+  }
+  .glitch-part .layer.bottom-half{
+    color:var(--cyan);
+    clip-path: polygon(0 50%, 100% 50%, 100% 100%, 0 100%);
+    animation: bounceDown 2.4s ease-in-out infinite;
+  }
+  @keyframes bounceUp{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(-4px); }
+  }
+  @keyframes bounceDown{
+    0%,100%{ transform:translateY(0); }
+    50%{ transform:translateY(4px); }
   }
 
-  .boundary-swoosh {
-    position: absolute;
-    bottom: -190px;
-    right: -70px;
-    width: 340px;
-    height: 340px;
-    background: #ec1cb3;
-    border-radius: 50%;
-    z-index: 1;
-    opacity: 0.95;
-    overflow: hidden;
+  /* Subtitle: one line, typewriter */
+  .subtitle-line{
+    display:inline-flex;
+    align-items:center;
+    justify-content:center;
+    background:#111;
+    color:#fff;
+    font-weight:800;
+    font-size:clamp(0.95rem, 1.6vw, 1.25rem);
+    letter-spacing:0.5px;
+    padding:14px 26px;
+    white-space:nowrap;
+    overflow:hidden;
+    max-width:95vw;
   }
-  .boundary-swoosh::after {
-    content: '';
-    position: absolute;
-    inset: 0;
-    opacity: 0.22;
-    mix-blend-mode: overlay;
-    background-repeat: repeat;
-    background-size: 180px 180px;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='180' height='180'%3E%3Cfilter id='n3'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='3' stitchTiles='stitch' result='t'/%3E%3CfeColorMatrix in='t' type='matrix' values='0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 3.2 -1.3'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n3)'/%3E%3C/svg%3E");
+  #typewriterText{ white-space:nowrap; }
+  .type-cursor{
+    display:inline-block;
+    width:3px;
+    background:#fff;
+    margin-left:4px;
+    animation:blinkCursor 0.8s step-end infinite;
+  }
+  @keyframes blinkCursor{ 50%{ opacity:0; } }
+
+  .hero-grid{
+    max-width:var(--page-max);
+    margin:0 auto;
+    display:grid;
+    grid-template-columns: 1.1fr 1fr 1fr;
+    gap:3.5vw;
+    align-items:start;
+    position:relative;
+    z-index:3;
+    padding:0 1vw;
+    margin-top:44px;
   }
 
-  .hero-inner { position: relative; z-index: 3; max-width: 1200px; margin: 0 auto; }
-
-  .eyebrow {
-    text-align: center;
-    font-size: 0.78rem;
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    color: #444;
-    font-weight: 700;
-    margin: 0 0 30px 0;
+  .col-left{ padding-top:0; min-width:0; }
+  .hero-desc{
+    font-size:1.1rem;
+    line-height:1.6;
+    color:#222;
+    max-width:540px;
+  }
+  .hero-desc + .hero-desc{
+    margin-top:16px;
   }
 
-  .hero-title-row { text-align: center; margin-bottom: 34px; }
-  .glitch {
-    position: relative;
-    display: inline-block;
-    font-size: clamp(3.4rem, 7.2vw, 6.4rem);
-    font-weight: 900;
-    letter-spacing: -2px;
-    color: #0c0c0c;
-    font-family: 'Segoe UI', Arial, sans-serif;
-    text-transform: uppercase;
-    line-height: 1;
+  .col-mid{
+    display:flex;
+    align-items:flex-start;
+    justify-content:center;
+    gap:18px;
+    min-width:0;
+    padding-top:0;
   }
-  .glitch::before,
-  .glitch::after {
-    content: attr(data-text);
-    position: absolute;
-    top: 0; left: 0;
-    width: 100%; height: 100%;
+  .influencer-frame{
+    position:relative;
+    width:100%;
+    max-width:340px;
+    aspect-ratio:3/4.2;
+    border:6px solid #111;
+    box-shadow:14px 14px 0 var(--magenta);
+    background:#ccc;
+    overflow:hidden;
+    flex-shrink:1;
+    min-width:0;
   }
-  .glitch::before {
-    color: #ec1cb3;
-    left: 4px;
-    clip-path: inset(0 0 55% 0);
-    animation: glitchTop 2.6s infinite linear alternate-reverse;
+  .influencer-frame img, .influencer-frame video{
+    width:100%; height:100%;
+    object-fit:cover;
+    display:block;
   }
-  .glitch::after {
-    color: #22d3ee;
-    left: -4px;
-    clip-path: inset(55% 0 0 0);
-    animation: glitchBottom 2.2s infinite linear alternate-reverse;
+  .social-icons{
+    display:flex;
+    flex-direction:column;
+    gap:14px;
+    padding-top:0;
+    flex-shrink:0;
   }
-  @keyframes glitchTop {
-    0%   { clip-path: inset(0 0 78% 0); transform: translate(0px,0px); }
-    20%  { clip-path: inset(0 0 60% 0); transform: translate(-3px,-1px); }
-    40%  { clip-path: inset(0 0 40% 0); transform: translate(3px,1px); }
-    60%  { clip-path: inset(0 0 65% 0); transform: translate(-2px,0px); }
-    80%  { clip-path: inset(0 0 50% 0); transform: translate(2px,1px); }
-    100% { clip-path: inset(0 0 78% 0); transform: translate(0px,0px); }
+  .social-icons a{
+    width:44px; height:44px;
+    display:flex; align-items:center; justify-content:center;
+    border-radius:11px;
+    box-shadow:4px 4px 0 #111;
+    border:2px solid #111;
   }
-  @keyframes glitchBottom {
-    0%   { clip-path: inset(75% 0 0 0); transform: translate(0px,0px); }
-    20%  { clip-path: inset(55% 0 0 0); transform: translate(3px,1px); }
-    40%  { clip-path: inset(40% 0 0 0); transform: translate(-3px,-1px); }
-    60%  { clip-path: inset(60% 0 0 0); transform: translate(2px,0px); }
-    80%  { clip-path: inset(48% 0 0 0); transform: translate(-2px,1px); }
-    100% { clip-path: inset(75% 0 0 0); transform: translate(0px,0px); }
+  .social-icons svg{ width:22px; height:22px; fill:#fff; }
+  .ig{ background:radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 90%); }
+  .tk{ background:#111; }
+  .fb{ background:#1877f2; }
+  .tw{ background:#111; }
+  .yt{ background:#ff0000; }
+
+  .col-right{ padding-top:0; min-width:0; }
+  .prompt-label{
+    font-weight:800;
+    font-size:0.9rem;
+    letter-spacing:1px;
+    margin-bottom:14px;
+  }
+  .prompt-box{
+    background:#0c0c0c;
+    border-radius:10px;
+    box-shadow:10px 10px 0 var(--cyan);
+    overflow:hidden;
+    position:relative;
+    z-index:3;
+    width:100%;
+    max-width:320px;
+  }
+  .prompt-top{
+    display:flex; gap:8px; align-items:center;
+    padding:10px 14px;
+    background:#1a1a1a;
+  }
+  .dot{ width:11px; height:11px; border-radius:50%; }
+  .dot.r{ background:#ff5f56; }
+  .dot.y{ background:#ffbd2e; }
+  .dot.g{ background:#27c93f; }
+  .prompt-file{ margin-left:8px; font-size:0.75rem; color:#999; font-family:monospace; white-space:nowrap; }
+  .prompt-body{
+    padding:18px 16px 22px;
+    font-family:'Courier New', monospace;
+    color:#3ef07c;
+    font-size:0.95rem;
+    line-height:1.6;
+  }
+  .cursor{
+    display:inline-block;
+    width:8px; height:1.1em;
+    background:#3ef07c;
+    margin-left:4px;
+    animation:blink 1s step-end infinite;
+    vertical-align:text-bottom;
+  }
+  @keyframes blink{ 50%{ opacity:0; } }
+
+  /* ---------- DARK SECTION ---------- */
+  .dark-section{
+    position:relative;
+    z-index:1;
+    padding:100px 4vw 80px;
+    overflow:hidden;
   }
 
-  .hero-grid { display: grid; grid-template-columns: 1.15fr 1fr 1fr; gap: 36px; align-items: center; }
-  .hero-col-left { text-align: left; }
-
-  .glitch-tag {
-    display: inline-block;
-    font-size: 0.68rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #fff;
-    background: #0c0c0c;
-    padding: 8px 12px;
-    line-height: 1.6;
-    margin-bottom: 20px;
+  .dark-content{
+    max-width:var(--page-max);
+    margin:0 auto;
+    position:relative;
+    z-index:3;
+  }
+  .intro{ text-align:left; margin-bottom:50px; }
+  .intro h2{
+    font-size:clamp(2rem, 4vw, 2.8rem);
+    color:var(--magenta);
+    margin:0 0 18px;
+    font-weight:800;
+  }
+  .intro p{
+    color:#d8d6e8;
+    font-size:1.1rem;
+    line-height:1.7;
+    max-width:900px;
   }
 
-  #subtitle {
-    font-size: 1rem;
-    color: #333;
-    max-width: 420px;
-    margin: 0;
-    line-height: 1.55;
-    text-align: left;
-    font-weight: 500;
+  .kpi-row{
+    display:grid;
+    grid-template-columns:repeat(4, 1fr);
+    gap:22px;
+    margin-bottom:50px;
   }
+  .kpi-card{
+    background:var(--dark-bg2);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:12px;
+    padding:26px 20px;
+    text-align:center;
+  }
+  .kpi-num{ font-size:2.4rem; font-weight:800; color:var(--purple); margin-bottom:6px; }
+  .kpi-label{ font-size:0.9rem; color:#b8b6cc; }
 
-  .hero-col-media { display: flex; justify-content: center; }
-  .media-row { display: flex; align-items: flex-start; gap: 16px; }
-  .influencer-frame {
-    position: relative;
-    width: 230px;
-    border: 4px solid #0c0c0c;
-    box-shadow: 10px 10px 0 #ec1cb3;
-    background: #000;
-    overflow: hidden;
-    flex-shrink: 0;
+  .chart-grid{ display:grid; grid-template-columns:1fr 1fr; gap:26px; }
+  .chart-card{
+    background:var(--dark-bg2);
+    border:1px solid rgba(255,255,255,0.08);
+    border-radius:12px;
+    padding:26px;
   }
-  .influencer-frame img { display: block; width: 100%; height: auto; }
-  .influencer-caption {
-    position: absolute;
-    left: 0;
-    right: 0;
-    bottom: 12px;
-    text-align: center;
-    z-index: 3;
-    font-family: Arial, 'Segoe UI', sans-serif;
-    font-weight: 900;
-    font-size: 1.3rem;
-    letter-spacing: 1px;
-    text-transform: uppercase;
-    color: #fff;
-    -webkit-text-stroke: 1px #000;
-    text-shadow: 3px 3px 0 #000, -2px -2px 0 #000, 2px -2px 0 #000, -2px 2px 0 #000;
-    line-height: 1.1;
-    padding: 0 8px;
-  }
-  .social-col { display: flex; flex-direction: column; gap: 12px; padding-top: 6px; }
-  .social-badge {
-    width: 42px;
-    height: 42px;
-    border-radius: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border: 3px solid #0c0c0c;
-    box-shadow: 4px 4px 0 #0c0c0c;
-    flex-shrink: 0;
-  }
-  .social-badge svg { width: 20px; height: 20px; fill: #fff; }
-  .social-ig { background: linear-gradient(135deg, #f58529, #dd2a7b, #8134af, #515bd4); }
-  .social-tt { background: #0c0c0c; }
-  .social-fb { background: #1877f2; }
+  .chart-card h3{ margin:0 0 8px; font-size:1.15rem; }
+  .chart-card p.sub{ margin:0 0 18px; color:#a9a7bf; font-size:1rem; line-height:1.5; }
+  .chart-wrap{ position:relative; height:340px; }
 
-  .hero-col-prompt { width: 100%; position: relative; z-index: 4; }
-  .prompt-label {
-    font-size: 0.68rem;
-    letter-spacing: 2px;
-    text-transform: uppercase;
-    color: #333;
-    font-weight: 700;
-    margin-bottom: 8px;
-    text-align: left;
+  #loadingState, #errorState{ text-align:center; padding:60px 20px; color:#cfcde0; font-size:1rem; }
+  .spinner{
+    width:40px; height:40px;
+    border:4px solid rgba(255,255,255,0.15);
+    border-top-color:var(--magenta);
+    border-radius:50%;
+    margin:0 auto 16px;
+    animation:spin 0.9s linear infinite;
   }
-  .prompt-box {
-    background: #0c0c0c;
-    border-radius: 14px;
-    overflow: hidden;
-    box-shadow: 8px 8px 0 #22d3ee;
-    border: 2px solid #0c0c0c;
-  }
-  .prompt-topbar {
-    display: flex;
-    align-items: center;
-    gap: 6px;
-    padding: 10px 14px;
-    background: #1a1a1a;
-    border-bottom: 1px solid #2a2a2a;
-  }
-  .prompt-dot { width: 10px; height: 10px; border-radius: 50%; }
-  .dot-red { background: #ff5f56; }
-  .dot-yellow { background: #ffbd2e; }
-  .dot-green { background: #27c93f;}
-  .prompt-topbar span { margin-left: 8px; font-size: 0.68rem; color: #888; font-family: 'Courier New', monospace; }
-  .prompt-body {
-    padding: 16px 16px 20px 16px;
-    font-family: 'Courier New', monospace;
-    font-size: 0.88rem;
-    color: #22e57a;
-    line-height: 1.6;
-  }
-  .prompt-body .prefix { color: #ec1cb3; }
-  .cursor {
-    display: inline-block;
-    width: 8px;
-    height: 1.1em;
-    background: #22e57a;
-    margin-left: 2px;
-    animation: blink 1s step-end infinite;
-    vertical-align: text-bottom;
-  }
-  @keyframes blink { 50% { opacity: 0; } }
+  @keyframes spin{ to{ transform:rotate(360deg); } }
 
-  @media (max-width: 1000px) {
-    .hero-grid { grid-template-columns: 1fr; gap: 36px; }
-    .hero-col-left { text-align: center; }
-    #subtitle { max-width: 480px; margin: 0 auto; text-align: center; }
-    .glitch-tag { text-align: center; }
-  }
-  @media (max-width: 640px) {
-    .media-row { flex-direction: column; align-items: center; }
-    .social-col { flex-direction: row; padding-top: 0; }
-    .influencer-frame { width: 220px; }
-  }
+  .footer-note{ margin-top:40px; text-align:center; color:#8b89a3; font-size:0.8rem; }
 
-  .dark-section {
-    position: relative;
-    overflow: hidden;
-    z-index: 1;
-    padding: 60px 32px 0 32px;
-    background: repeating-linear-gradient(0deg, rgba(255,255,255,0.045) 0px, rgba(255,255,255,0.045) 1px, transparent 1px, transparent 40px),
-                repeating-linear-gradient(90deg, rgba(255,255,255,0.045) 0px, rgba(255,255,255,0.045) 1px, transparent 1px, transparent 40px),
-                #0f1120;
-  }
-
-  .dark-section .float-sq.d1 { top: 6%;  left: 6%;  background: #ff2fb0; animation: floatMove 8s ease-in-out infinite; }
-  .dark-section .float-sq.d2 { top: 20%; right: 8%; background: #22d3ee; animation: floatMoveSlow 10s ease-in-out infinite; }
-  .dark-section .float-sq.d3 { top: 46%; left: 4%;  background: #ffd400; width:16px; height:16px; animation: floatMove 7s ease-in-out infinite; }
-  .dark-section .float-sq.d4 { top: 65%; right: 5%; background: #ec1cb3; animation: floatMoveSlow 9s ease-in-out infinite; }
-  .dark-section .float-sq.d5 { top: 85%; left: 8%;  background: #22d3ee; width:14px; height:14px; animation: floatMove 6s ease-in-out infinite; }
-
-  .content-layer { position: relative; z-index: 2; }
-
-  #loadingState, #errorState { max-width: 600px; margin: 60px auto; text-align: center; color: #b7b9d1; }
-  .spinner {
-    width: 46px;
-    height: 46px;
-    border: 4px solid rgba(255,255,255,0.15);
-    border-top-color: #8a5cf6;
-    border-radius: 50%;
-    margin: 0 auto 16px auto;
-    animation: spin 0.9s linear infinite;
-  }
-  @keyframes spin { to { transform: rotate(360deg); } }
-  #errorState { color: #ff8a8a; display: none; }
-
-  #dashboardContent { display: none; max-width: 1200px; margin: 0 auto; }
-
-  .intro { max-width: 1200px; margin: 0 auto 32px auto; text-align: left; }
-  .intro h2 { margin: 0 0 12px 0; font-size: clamp(1.6rem, 3vw, 2.2rem); font-weight: 800; color: #ec1cb3; }
-  .intro p { margin: 0; max-width: 640px; font-size: 0.98rem; line-height: 1.65; color: #d3d4e6; }
-
-  .stats-grid { display: grid; grid-template-columns: repeat(4, 1fr); gap: 16px; margin-bottom: 28px; }
-  .stat-card { background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08); border-radius: 14px; padding: 18px; text-align: center; }
-  .stat-card .stat-value { font-size: 1.7rem; font-weight: 800; color: #a78bfa; }
-  .stat-card .stat-label { font-size: 0.8rem; color: #9698b8; margin-top: 4px; }
-
-  .charts-grid { display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; }
-  .chart-card {
-    background: rgba(255,255,255,0.05);
-    border: 1px solid rgba(255,255,255,0.08);
-    border-radius: 16px;
-    padding: 18px;
-    min-height: 380px;
-    display: flex;
-    flex-direction: column;
-  }
-  .chart-card h3 { margin: 0 0 4px 0; font-size: 1.02rem; color: #f1f1f6; }
-  .chart-card p { margin: 0 0 14px 0; font-size: 0.78rem; color: #9698b8; }
-  .chart-wrap { position: relative; flex: 1; min-height: 260px; }
-
-  footer { max-width: 1200px; margin: 32px auto 0 auto; text-align: center; color: #7d7fa0; font-size: 0.75rem; padding-bottom: 40px; }
-
-  @media (max-width: 900px) {
-    .stats-grid { grid-template-columns: repeat(2, 1fr); }
-    .charts-grid { grid-template-columns: 1fr; }
-  }
-  @media (max-width: 500px) {
-    .stats-grid { grid-template-columns: 1fr; }
+  @media (max-width: 900px){
+    .hero-grid{ grid-template-columns:1fr; gap:40px; }
+    .col-left, .col-mid, .col-right{ justify-content:center; text-align:center; }
+    .hero-desc{ margin:0 auto; }
+    .subtitle-line{ white-space:normal; }
+    .prompt-box{ margin:0 auto; }
+    .kpi-row{ grid-template-columns:repeat(2,1fr); }
+    .chart-grid{ grid-template-columns:1fr; }
   }
 </style>
 
-
-
+<!-- HERO -->
 <section class="hero grain-light">
-  <div class="float-shape float-sq c1"></div>
-  <div class="float-shape float-sq c2"></div>
-  <div class="float-shape float-sq c3"></div>
-  <div class="float-shape float-sq c4"></div>
-  <div class="float-shape float-sq c5"></div>
-  <div class="star">✦</div>
-  <div class="boundary-swoosh"></div>
+  <div class="float-shape sq float-a" style="top:20px;left:24px;background:var(--magenta);"></div>
+  <div class="float-shape sq float-b" style="top:60px;left:34px;background:var(--yellow);"></div>
+  <div class="float-shape sq float-c" style="top:36px;left:60px;background:var(--cyan);"></div>
+  <div class="float-shape float-b" style="top:24px;right:60px;color:#111;font-size:1.6rem;">✦</div>
+  <div class="float-shape sq float-a" style="top:26px;right:28px;background:var(--cyan);"></div>
 
-  <div class="hero-inner">
-    <p class="eyebrow">Taller de Comunicación Transmedia</p>
+  <div class="eyebrow">TALLER DE COMUNICACIÓN TRANSMEDIA</div>
 
-    <div class="hero-title-row">
-      <span class="glitch" data-text="InfluencIA">InfluencIA</span>
+  <div class="hero-title-block">
+    <span class="glitch-title">
+      <span class="static-part">Influenc</span><span class="glitch-part">
+        <span class="base">IA</span>
+        <span class="layer top-half">IA</span>
+        <span class="layer bottom-half">IA</span>
+      </span>
+    </span>
+    <div style="margin-top:22px;">
+      <span class="subtitle-line"><span id="typewriterText"></span><span class="type-cursor" id="typeCursor">&nbsp;</span></span>
+    </div>
+  </div>
+
+  <div class="hero-grid">
+    <div class="col-left">
+      <p class="hero-desc">Análisis realizado a partir de una encuesta propia sobre la manera en que las audiencias jóvenes en Argentina perciben, consumen y construyen confianza en torno a figuras políticas e influencers creados mediante inteligencia artificial en redes sociales.</p>
+      <p class="hero-desc">El objetivo de la investigación es analizar el rol de la autenticidad y la estética en la construcción de confianza e influencia, y explorar en qué medida el conocimiento de que una figura fue creada mediante inteligencia artificial modifica la credibilidad y la relación de las audiencias con su contenido. A su vez, buscamos indagar sus posibles desarrollos futuros dentro de la comunicación política digital.</p>
     </div>
 
-    <div class="hero-grid">
-
-      <div class="hero-col-left">
-        <div><span class="glitch-tag">Cualquier parecido con la realidad<br>¿es pura coincidencia?</span></div>
-        <p id="subtitle">Un análisis de la encuesta propia sobre cómo audiencias jóvenes en Argentina perciben, consumen y confían en figuras políticas e influencers construidos con Inteligencia Artificial en redes sociales.</p>
+    <div class="col-mid">
+      <div class="influencer-frame">
+        <img src="ezgif.com-gif-maker.gif" alt="Retrato de influencer política creada con IA">
       </div>
+      <div class="social-icons">
+        <a class="ig" href="#" aria-label="Instagram">
+          <svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path></svg>
+        </a>
+        <a class="tk" href="#" aria-label="TikTok">
+          <svg viewBox="0 0 24 24"><path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6c0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64c0 3.33 2.76 5.7 5.69 5.7c3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.03 1.2V7.13s-1.94.09-3.37-1.31z"></path></svg>
+        </a>
+        <a class="fb" href="#" aria-label="Facebook">
+          <svg viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.6 0 0 .6 0 1.325v21.351C0 23.4.6 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.098 2.795.142v3.24l-1.918.001c-1.504 0-1.795.716-1.795 1.765v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.4 24 24 23.4 24 22.676V1.325C24 .6 23.4 0 22.675 0z"></path></svg>
+        </a>
+        <a class="tw" href="#" aria-label="X / Twitter">
+          <svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg>
+        </a>
+        <a class="yt" href="#" aria-label="YouTube">
+          <svg viewBox="0 0 24 24"><path d="M23.498 6.186a2.994 2.994 0 0 0-2.112-2.112C19.505 3.5 12 3.5 12 3.5s-7.505 0-9.386.574A2.994 2.994 0 0 0 .502 6.186C0 8.069 0 12 0 12s0 3.931.502 5.814a2.994 2.994 0 0 0 2.112 2.112C4.495 20.5 12 20.5 12 20.5s7.505 0 9.386-.574a2.994 2.994 0 0 0 2.112-2.112C24 15.931 24 12 24 12s0-3.931-.502-5.814zM9.75 15.568V8.432L15.818 12z"></path></svg>
+        </a>
+      </div>
+    </div>
 
-      <div class="hero-col-media">
-        <div class="media-row">
-          <div class="influencer-frame">
-            <img src="ezgif.com-gif-maker.gif" alt="GIF animado de influencer política generada con IA">
-            <div class="influencer-caption">LLOREN KUKAS</div>
-          </div>
-          <div class="social-col">
-            <div class="social-badge social-ig" title="Instagram">
-              <svg viewBox="0 0 24 24"><path d="M12 2.2c3.2 0 3.6 0 4.85.07 1.17.05 2.02.24 2.75.5a5.5 5.5 0 0 1 2 1.3 5.5 5.5 0 0 1 1.3 2c.26.73.45 1.58.5 2.75.07 1.25.07 1.65.07 4.85s0 3.6-.07 4.85c-.05 1.17-.24 2.02-.5 2.75a5.5 5.5 0 0 1-1.3 2 5.5 5.5 0 0 1-2 1.3c-.73.26-1.58.45-2.75.5-1.25.07-1.65.07-4.85.07s-3.6 0-4.85-.07c-1.17-.05-2.02-.24-2.75-.5a5.5 5.5 0 0 1-2-1.3 5.5 5.5 0 0 1-1.3-2c-.26-.73-.45-1.58-.5-2.75C2.2 15.6 2.2 15.2 2.2 12s0-3.6.07-4.85c.05-1.17.24-2.02.5-2.75a5.5 5.5 0 0 1 1.3-2 5.5 5.5 0 0 1 2-1.3c.73-.26 1.58-.45 2.75-.5C8.4 2.2 8.8 2.2 12 2.2zm0 3.05a6.75 6.75 0 1 0 0 13.5 6.75 6.75 0 0 0 0-13.5zm0 2.16a4.6 4.6 0 1 1 0 9.2 4.6 4.6 0 0 1 0-9.2zm5.9-2.6a1.14 1.14 0 1 1 0 2.28 1.14 1.14 0 0 1 0-2.28z"></path></svg>
-            </div>
-            <div class="social-badge social-tt" title="TikTok">
-              <svg viewBox="0 0 24 24"><path d="M16.5 2h-3v13.6a3.1 3.1 0 1 1-2.2-2.97V9.4a6.3 6.3 0 1 0 5.2 6.2V9.3c1.1.9 2.4 1.4 3.9 1.4V7.5c-2.1 0-3.9-1.7-3.9-3.9V2z"></path></svg>
-            </div>
-            <div class="social-badge social-fb" title="Facebook">
-              <svg viewBox="0 0 24 24"><path d="M13.5 21v-7.2h2.4l.45-2.8h-2.85V9.2c0-.8.23-1.35 1.4-1.35h1.5V5.35C15.83 5.25 14.95 5.2 14 5.2c-2.4 0-4.05 1.46-4.05 4.15v2.65H7.5v2.8h2.45V21h3.55z"></path></svg>
-            </div>
-          </div>
+    <div class="col-right">
+      <div class="prompt-label">PROMPT UTILIZADO PARA GENERAR EL AVATAR</div>
+      <div class="prompt-box">
+        <div class="prompt-top">
+          <span class="dot r"></span><span class="dot y"></span><span class="dot g"></span>
+          <span class="prompt-file">generador-avatar-ia.exe</span>
         </div>
+        <div class="prompt-body">&gt; Rubia tetona, cara perfecta, mujer perfecta, bardea a los kukas.<span class="cursor"></span></div>
       </div>
-
-      <div class="hero-col-prompt">
-        <p class="prompt-label">Prompt utilizado para generar el avatar</p>
-        <div class="prompt-box">
-          <div class="prompt-topbar">
-            <div class="prompt-dot dot-red"></div>
-            <div class="prompt-dot dot-yellow"></div>
-            <div class="prompt-dot dot-green"></div>
-            <span>generador-avatar-ia.exe</span>
-          </div>
-          <div class="prompt-body">
-            <span class="prefix">&gt;</span> Rubia tetona, cara perfecta, mujer perfecta, bardea a los kukas.<span class="cursor"></span>
-          </div>
-        </div>
-      </div>
-
     </div>
   </div>
 </section>
 
-<div class="dark-section grain-dark">
+<!-- DARK / DATA SECTION -->
+<section class="dark-section grain-dark">
+  <div class="float-shape sq float-a" style="top:80px;left:6%;background:var(--magenta);"></div>
+  <div class="float-shape sq float-b" style="top:220px;left:2%;background:var(--yellow);"></div>
+  <div class="float-shape sq float-c" style="top:40%;left:88%;background:var(--cyan);"></div>
+  <div class="float-shape sq float-a" style="top:70%;left:4%;background:var(--purple);"></div>
+  <div class="float-shape sq float-b" style="top:88%;left:92%;background:var(--magenta);"></div>
 
-  <div class="float-shape float-sq d1"></div>
-  <div class="float-shape float-sq d2"></div>
-  <div class="float-shape float-sq d3"></div>
-  <div class="float-shape float-sq d4"></div>
-  <div class="float-shape float-sq d5"></div>
-
-  <div class="content-layer">
-
-    <section class="intro">
-      <h2 id="introTitle">El caso de La Libertad Avanza</h2>
-      <p id="introText">
-        Este dashboard analiza el caso de las influencers políticas creadas con inteligencia artificial vinculadas a La Libertad Avanza. A partir de una encuesta propia y fuentes secundarias, exploramos cómo los jóvenes argentinos perciben la autenticidad, la confianza y los riesgos de estos avatares digitales en la comunicación política.
-      </p>
-    </section>
+  <div class="dark-content">
+    <div class="intro">
+      <h2>El caso de La Libertad Avanza</h2>
+      <p id="introText">Este dashboard analiza el caso de las influencers políticas creadas con inteligencia artificial vinculadas a La Libertad Avanza. A partir de una encuesta propia y fuentes secundarias, exploramos cómo los jóvenes argentinos perciben la autenticidad, la confianza y los riesgos de estos avatares digitales en la comunicación política.</p>
+    </div>
 
     <div id="loadingState">
       <div class="spinner"></div>
-      <p id="loadingText">Cargando datos de la encuesta desde Google Sheets...</p>
+      Cargando datos de la encuesta desde Google Sheets...
     </div>
 
-    <div id="errorState">
-      <p id="errorText">⚠️ No se pudieron cargar los datos. Verificá la URL del CSV o tu conexión.</p>
-    </div>
+    <div id="errorState" style="display:none;"></div>
 
-    <div id="dashboardContent">
+    <div id="dashboardContent" style="display:none;">
+      <div class="kpi-row" id="kpiRow"></div>
 
-      <div class="stats-grid">
-        <div class="stat-card">
-          <div class="stat-value" id="statTotal">-</div>
-          <div class="stat-label">Respuestas totales</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="statDetectedAI">-</div>
-          <div class="stat-label">Ya identificaron contenido de IA</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="statChangePerception">-</div>
-          <div class="stat-label">Cambiaría su confianza si es IA</div>
-        </div>
-        <div class="stat-card">
-          <div class="stat-value" id="statNoRepresent">-</div>
-          <div class="stat-label">Cree que NO podría representarlo/a una IA</div>
-        </div>
-      </div>
-
-      <div class="charts-grid">
-
+      <div class="chart-grid">
         <div class="chart-card">
-          <h3 id="chartTitle1">📱 Plataforma de mayor consumo</h3>
-          <p id="chartDesc1">A quiénes está dirigido el contenido: red social usada con mayor frecuencia por los/as encuestados/as.</p>
+          <h3>Plataforma de mayor consumo</h3>
+          <p class="sub">A quiénes está dirigido el contenido: red social usada con mayor frecuencia por los/as encuestados/as.</p>
           <div class="chart-wrap"><canvas id="chartPlatform"></canvas></div>
         </div>
-
         <div class="chart-card">
-          <h3 id="chartTitle2">🤖 Sentimientos frente a influencers de IA</h3>
-          <p id="chartDesc2">Cómo se sienten los/as encuestados/as ante la presencia creciente de influencers creados con IA (respuesta múltiple).</p>
+          <h3>Sentimientos frente a influencers de IA</h3>
+          <p class="sub">Cómo se sienten los/as encuestados/as ante la presencia creciente de influencers creados con IA (respuesta múltiple).</p>
           <div class="chart-wrap"><canvas id="chartFeelings"></canvas></div>
         </div>
-
         <div class="chart-card">
-          <h3 id="chartTitle3">🎭 ¿Necesita ser una persona real?</h3>
-          <p id="chartDesc3">Si descubrieran que un influencer de confianza fue creado con IA, ¿cambiaría su percepción sobre el contenido?</p>
+          <h3>Cambio de confianza al saber que es IA</h3>
+          <p class="sub">¿Cambiaría tu percepción sobre el contenido si descubrís que la figura fue creada con IA?</p>
           <div class="chart-wrap"><canvas id="chartTrust"></canvas></div>
         </div>
-
         <div class="chart-card">
-          <h3 id="chartTitle4">🔮 Futuro de las figuras políticas con IA</h3>
-          <p id="chartDesc4">¿Creen que una figura política completamente artificial podría tener más influencia que un político humano?</p>
+          <h3>¿Una IA podría tener más influencia que un humano?</h3>
+          <p class="sub">Percepción sobre el futuro de las figuras políticas artificiales frente a las humanas.</p>
           <div class="chart-wrap"><canvas id="chartFuture"></canvas></div>
         </div>
-
       </div>
     </div>
 
-    <footer>
-      <p id="footerNote">Fuente: Encuesta propia "InfluencIA" — Datos leídos en vivo desde Google Sheets (pestaña "form").</p>
-    </footer>
-
+    <div class="footer-note">Fuente: Encuesta propia "InfluencIA" — Datos leídos en vivo desde Google Sheets.</div>
   </div>
-</div>
+</section>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/PapaParse/5.4.1/papaparse.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.4/dist/chart.umd.min.js"></script>
 <script>
-  const CSV_BASE = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPiVdb5Txiu2bWaI7dNQ_KD_dhpDVATCDSbFM6PzIMzzRehkxAYS5E80EIpy4Zx4eh36_xxYCWblay/pub?output=csv";
-  const FORM_GID = "1027244575";
-  const FORM_URL = CSV_BASE + "&gid=" + FORM_GID;
-
-  const PALETTE = ["#8a5cf6", "#ec4899", "#22d3ee", "#f59e0b", "#34d399", "#f87171", "#a78bfa", "#60a5fa", "#fb923c", "#f472b6"];
-
-  function normalize(str) {
-    return (str || "")
-      .toString()
-      .toLowerCase()
-      .normalize("NFD").replace(/[\u0300-\u036f]/g, "")
-      .replace(/[¿?¡!.,]/g, "")
-      .trim();
+const fullSubtitle = "CUALQUIER PARECIDO CON LA REALIDAD ¿ES PURA COINCIDENCIA?";
+let twIndex = 0;
+const twEl = document.getElementById("typewriterText");
+function typeStep(){
+  if(twIndex <= fullSubtitle.length){
+    twEl.textContent = fullSubtitle.slice(0, twIndex);
+    twIndex++;
+    setTimeout(typeStep, 45);
   }
+}
+typeStep();
 
-  function findColumn(headers, fragment) {
-    const nf = normalize(fragment);
-    return headers.find(h => normalize(h).includes(nf)) || null;
+const CSV_URL = "https://docs.google.com/spreadsheets/d/e/2PACX-1vTPiVdb5Txiu2bWaI7dNQ_KD_dhpDVATCDSbFM6PzIMzzRehkxAYS5E80EIpy4Zx4eh36_xxYCWblay/pub?output=csv&gid=1027244575";
+
+const COLORS = ["#7c6cf2","#ec1cb3","#37d7f2","#f2c94c","#3ef07c","#ff5f56","#a78bfa"];
+
+function normalize(s){
+  return (s||"").toString().toLowerCase()
+    .normalize("NFD").replace(/[\u0300-\u036f]/g,"")
+    .replace(/[¿?¡!.,]/g,"").trim();
+}
+function findColumn(headers, keywords){
+  const norm = headers.map(h=>({h, n:normalize(h)}));
+  for(const k of keywords){
+    const nk = normalize(k);
+    const found = norm.find(o=>o.n.includes(nk));
+    if(found) return found.h;
   }
-
-  function countSingle(rows, col) {
-    const counts = {};
-    if (!col) return counts;
-    rows.forEach(r => {
-      const val = (r[col] || "").toString().trim();
-      if (!val) return;
-      counts[val] = (counts[val] || 0) + 1;
+  return null;
+}
+function countSingle(rows, col){
+  const counts = {};
+  rows.forEach(r=>{
+    const v = (r[col]||"").trim();
+    if(!v) return;
+    counts[v] = (counts[v]||0)+1;
+  });
+  return counts;
+}
+function countMulti(rows, col){
+  const counts = {};
+  rows.forEach(r=>{
+    const v = (r[col]||"").trim();
+    if(!v) return;
+    v.split(",").map(s=>s.trim()).filter(Boolean).forEach(item=>{
+      counts[item] = (counts[item]||0)+1;
     });
-    return counts;
-  }
-
-  function countMulti(rows, col) {
-    const counts = {};
-    if (!col) return counts;
-    rows.forEach(r => {
-      const val = (r[col] || "").toString().trim();
-      if (!val) return;
-      val.split(",").map(s => s.trim()).filter(Boolean).forEach(opt => {
-        counts[opt] = (counts[opt] || 0) + 1;
-      });
-    });
-    return counts;
-  }
-
-  function sortedEntries(obj) {
-    return Object.entries(obj).sort((a, b) => b[1] - a[1]);
-  }
-
-  function makeBarChart(ctx, labels, data, horizontal = false) {
-    return new Chart(ctx, {
-      type: "bar",
-      data: {
-        labels: labels,
-        datasets: [{
-          data: data,
-          backgroundColor: PALETTE,
-          borderColor: "rgba(255,255,255,0.08)",
-          borderWidth: 1,
-          borderRadius: 6
-        }]
-      },
-      options: {
-        indexAxis: horizontal ? "y" : "x",
-        responsive: true,
-        maintainAspectRatio: false,
-        plugins: {
-          legend: { display: false },
-          tooltip: {
-            backgroundColor: "#1a1c33",
-            titleColor: "#fff",
-            bodyColor: "#dcdcf0"
-          }
-        },
-        scales: {
-          x: {
-            ticks: { color: "#b7b9d1", autoSkip: false },
-            grid: { color: "rgba(255,255,255,0.05)" }
-          },
-          y: {
-            ticks: { color: "#b7b9d1" },
-            grid: { color: "rgba(255,255,255,0.05)" },
-            beginAtZero: true
-          }
-        }
+  });
+  return counts;
+}
+function sortDesc(counts){
+  return Object.entries(counts).sort((a,b)=>b[1]-a[1]);
+}
+function makeBarChart(ctxId, labels, data, horizontal){
+  const ctx = document.getElementById(ctxId).getContext("2d");
+  new Chart(ctx, {
+    type:"bar",
+    data:{
+      labels,
+      datasets:[{
+        data,
+        backgroundColor: labels.map((_,i)=>COLORS[i % COLORS.length]),
+        borderRadius:6,
+        maxBarThickness: 46
+      }]
+    },
+    options:{
+      indexAxis: horizontal ? "y" : "x",
+      responsive:true,
+      maintainAspectRatio:false,
+      plugins:{ legend:{ display:false } },
+      scales:{
+        x:{ grid:{ color:"rgba(255,255,255,0.06)" }, ticks:{ color:"#cfcde0" } },
+        y:{ grid:{ color:"rgba(255,255,255,0.06)" }, ticks:{ color:"#cfcde0" } }
       }
-    });
-  }
-
-  async function loadDashboard() {
-    try {
-      const response = await fetch(FORM_URL);
-      if (!response.ok) throw new Error("HTTP " + response.status);
-      const csvText = await response.text();
-
-      const parsed = Papa.parse(csvText, {
-        header: true,
-        skipEmptyLines: true
-      });
-
-      let rows = parsed.data;
-      const headers = parsed.meta.fields || [];
-
-      rows = rows.filter(r => Object.values(r).some(v => (v || "").toString().trim() !== ""));
-
-      if (rows.length === 0) throw new Error("Sin filas de datos");
-
-      const colPlatform   = findColumn(headers, "red social que utilizas con mayor frecuencia");
-      const colFeelings   = findColumn(headers, "como te sentis frente a la presencia cada vez mayor de influencers");
-      const colTrust      = findColumn(headers, "imagina un influencer en el que confies");
-      const colFuture     = findColumn(headers, "crees que en el futuro seria posible que una figura politica completamente artificial");
-      const colDetectedAI = findColumn(headers, "alguna vez identificaste que una imagen, video o perfil");
-      const colRepresent  = findColumn(headers, "crees que una figura politica creada con ia podria llegar a representarte");
-
-      document.getElementById("statTotal").textContent = rows.length;
-
-      if (colDetectedAI) {
-        const c = countSingle(rows, colDetectedAI);
-        const yes = c["Sí"] || c["Si"] || 0;
-        document.getElementById("statDetectedAI").textContent =
-          Math.round((yes / rows.length) * 100) + "%";
-      }
-
-      if (colTrust) {
-        const c = countSingle(rows, colTrust);
-        let changed = 0;
-        Object.entries(c).forEach(([k, v]) => {
-          if (normalize(k).startsWith("si cambiaria")) changed += v;
-        });
-        document.getElementById("statChangePerception").textContent =
-          Math.round((changed / rows.length) * 100) + "%";
-      }
-
-      if (colRepresent) {
-        const c = countSingle(rows, colRepresent);
-        let no = 0;
-        Object.entries(c).forEach(([k, v]) => {
-          const nk = normalize(k);
-          if (nk.startsWith("no")) no += v;
-        });
-        document.getElementById("statNoRepresent").textContent =
-          Math.round((no / rows.length) * 100) + "%";
-      }
-
-      const platformCounts = sortedEntries(countSingle(rows, colPlatform));
-      makeBarChart(
-        document.getElementById("chartPlatform"),
-        platformCounts.map(e => e[0]),
-        platformCounts.map(e => e[1]),
-        false
-      );
-
-      const feelingsCounts = sortedEntries(countMulti(rows, colFeelings)).slice(0, 8);
-      makeBarChart(
-        document.getElementById("chartFeelings"),
-        feelingsCounts.map(e => e[0]),
-        feelingsCounts.map(e => e[1]),
-        true
-      );
-
-      const trustCounts = sortedEntries(countSingle(rows, colTrust));
-      makeBarChart(
-        document.getElementById("chartTrust"),
-        trustCounts.map(e => e[0].length > 28 ? e[0].slice(0, 28) + "…" : e[0]),
-        trustCounts.map(e => e[1]),
-        false
-      );
-
-      const futureCounts = sortedEntries(countSingle(rows, colFuture));
-      makeBarChart(
-        document.getElementById("chartFuture"),
-        futureCounts.map(e => e[0]),
-        futureCounts.map(e => e[1]),
-        false
-      );
-
-      document.getElementById("loadingState").style.display = "none";
-      document.getElementById("dashboardContent").style.display = "block";
-
-    } catch (err) {
-      console.error(err);
-      document.getElementById("loadingState").style.display = "none";
-      document.getElementById("errorState").style.display = "block";
-      document.getElementById("errorText").textContent =
-        "⚠️ No se pudieron cargar los datos (" + err.message + "). Verificá que la hoja esté publicada como CSV.";
     }
-  }
+  });
+}
+function kpiCard(num, label){
+  return `<div class="kpi-card"><div class="kpi-num">${num}</div><div class="kpi-label">${label}</div></div>`;
+}
 
-  loadDashboard();
+fetch(CSV_URL)
+  .then(res=>{
+    if(!res.ok) throw new Error("No se pudo obtener el CSV (status " + res.status + ")");
+    return res.text();
+  })
+  .then(csvText=>{
+    const parsed = Papa.parse(csvText, { header:true, skipEmptyLines:true });
+    const rows = parsed.data;
+    const headers = parsed.meta.fields || [];
+
+    const colPlatform = findColumn(headers, ["red social que utilizas con mayor frecuencia"]);
+    const colFeelings = findColumn(headers, ["como te sientes frente a la presencia"]);
+    const colTrust = findColumn(headers, ["cambiaria tu percepcion"]);
+    const colFuture = findColumn(headers, ["crees que en el futuro seria posible"]);
+    const colIdentified = findColumn(headers, ["identificaste que una imagen"]);
+    const colRepresent = findColumn(headers, ["podria llegar a representarte"]);
+
+    const total = rows.length;
+
+    const platformCounts = colPlatform ? countSingle(rows, colPlatform) : {};
+    const feelingsCounts = colFeelings ? countMulti(rows, colFeelings) : {};
+    const trustCounts = colTrust ? countSingle(rows, colTrust) : {};
+    const futureCounts = colFuture ? countSingle(rows, colFuture) : {};
+
+    const identifiedYes = colIdentified ? rows.filter(r=>normalize(r[colIdentified]).startsWith("si")).length : 0;
+    const trustChanges = colTrust ? rows.filter(r=>normalize(r[colTrust]).startsWith("si")).length : 0;
+    const representNo = colRepresent ? rows.filter(r=>normalize(r[colRepresent]).startsWith("no")).length : 0;
+
+    const pct = (n)=> total ? Math.round((n/total)*100)+"%" : "0%";
+
+    document.getElementById("kpiRow").innerHTML =
+      kpiCard(total, "Respuestas totales") +
+      kpiCard(pct(identifiedYes), "Ya identificaron contenido de IA") +
+      kpiCard(pct(trustChanges), "Cambiaría su confianza si es IA") +
+      kpiCard(pct(representNo), "Cree que NO podría representarlo/a una IA");
+
+    const platSorted = sortDesc(platformCounts);
+    makeBarChart("chartPlatform", platSorted.map(x=>x[0]), platSorted.map(x=>x[1]), false);
+
+    const feelSorted = sortDesc(feelingsCounts);
+    makeBarChart("chartFeelings", feelSorted.map(x=>x[0]), feelSorted.map(x=>x[1]), true);
+
+    const trustSorted = sortDesc(trustCounts);
+    makeBarChart("chartTrust", trustSorted.map(x=>x[0]), trustSorted.map(x=>x[1]), false);
+
+    const futureSorted = sortDesc(futureCounts);
+    makeBarChart("chartFuture", futureSorted.map(x=>x[0]), futureSorted.map(x=>x[1]), false);
+
+    document.getElementById("loadingState").style.display = "none";
+    document.getElementById("dashboardContent").style.display = "block";
+  })
+  .catch(err=>{
+    document.getElementById("loadingState").style.display = "none";
+    const errBox = document.getElementById("errorState");
+    errBox.style.display = "block";
+    errBox.innerHTML = "⚠️ No se pudieron cargar los datos.<br>" + err.message;
+  });
 </script>
-
 
 </body></html>
