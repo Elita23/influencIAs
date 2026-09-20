@@ -1,4 +1,4 @@
-<html data-type="html" data-identifier="b6a814e8-670b-47f8-8d1d-ed55946771a3" data-title="Dashboard InfluencIA - Encuesta" data-version="36" imagemodel="imagen-4"><head></head>
+<html data-type="html" data-identifier="b6a814e8-670b-47f8-8d1d-ed55946771a3" data-title="Dashboard InfluencIA - Encuesta" data-version="38" imagemodel="imagen-4"><head></head>
 <body style="margin:0;">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,400&display=swap');
@@ -202,11 +202,35 @@ input[type="radio"].si-radio{display:none;}
 .si-compare-inner{max-width:var(--page-max);margin:0 auto;}
 .si-compare-title{color:var(--magenta);font-size:1.6rem;font-weight:800;margin-bottom:30px;text-align:left;}
 .si-compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:stretch;}
-.si-pie-card{background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:28px;text-align:center;box-shadow:6px 6px 0 rgba(0,0,0,0.06);display:flex;flex-direction:column;justify-content:center;}
-.si-pie-card h3{color:#111;font-size:1rem;margin:0 0 20px;}
-.si-pie{width:180px;height:180px;border-radius:50%;margin:0 auto 20px;background:conic-gradient(var(--magenta) 0% 70%,var(--purple) 70% 98%,var(--yellow) 98% 100%);border:4px solid #111;}
-.si-pie-legend{text-align:left;font-size:0.85rem;line-height:1.9;color:#333;}
-.si-pie-legend .dot{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:8px;}
+.si-pie-card{background:#fff;border:1px solid rgba(0,0,0,0.06);border-radius:20px;padding:32px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.08);display:flex;flex-direction:column;justify-content:center;}
+.si-pie-card h3{color:#111;font-size:1.05rem;font-weight:800;margin:0 0 24px;}
+.si-pie-wrap{position:relative;width:200px;height:200px;margin:0 auto 24px;}
+.si-pie{
+  width:200px;height:200px;border-radius:50%;
+  background:conic-gradient(
+    var(--magenta) 0deg 252deg,
+    #fff 252deg 254deg,
+    var(--purple) 254deg 354deg,
+    #fff 354deg 356deg,
+    var(--yellow) 356deg 360deg
+  );
+  filter:drop-shadow(0 6px 14px rgba(236,28,179,0.18));
+}
+.si-pie-hole{
+  position:absolute;inset:32px;
+  background:#fff;border-radius:50%;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  box-shadow:inset 0 2px 6px rgba(0,0,0,0.06);
+}
+.si-pie-hole-val{font-size:1.5rem;font-weight:800;color:#111;}
+.si-pie-hole-lab{font-size:0.68rem;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
+.si-pie-legend{display:flex;flex-direction:column;gap:12px;text-align:left;}
+.si-pie-legend-row{display:flex;align-items:center;gap:10px;}
+.si-pie-legend .dot{display:inline-block;width:11px;height:11px;border-radius:3px;flex-shrink:0;}
+.si-pie-legend-text{font-size:0.85rem;color:#333;flex:1;}
+.si-pie-legend-text b{font-weight:800;color:#111;}
+.si-pie-legend-bar{width:60px;height:6px;border-radius:6px;background:#eee;overflow:hidden;flex-shrink:0;}
+.si-pie-legend-bar-fill{height:100%;border-radius:6px;}
 .si-winners{display:flex;flex-direction:column;gap:14px;}
 .si-winner{background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:14px;padding:16px 20px;box-shadow:6px 6px 0 rgba(0,0,0,0.06);}
 .si-winner-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
@@ -421,7 +445,13 @@ input[type="radio"].si-radio{display:none;}
       </div>
     </div>
 
-    <div class="si-block">
+    <div class="footer-note">Fuente: Encuesta propia "InfluencIA".</div>
+  </div>
+</section>
+
+<section class="dark-section grain-dark" style="padding-top:80px;">
+  <div class="dark-content">
+    <div class="si-block" style="margin-top:0;">
       <div class="si-title">Métricas por red social</div>
 
       <input type="radio" name="si-network" id="si-ig" class="si-radio" checked="checked">
@@ -440,7 +470,7 @@ input[type="radio"].si-radio{display:none;}
 
         <div class="si-panel" id="si-panel-ig">
           <div class="si-profile-card">
-            <div class="si-profile-pic"><img src="Perfil IG Lucia.png" alt="Perfil Instagram"></div>
+            <div class="si-profile-pic"><img src="FOTO DE PERFIL.png" alt="Perfil Instagram"></div>
             <div class="si-profile-info">
               <div class="si-profile-name-row"><span class="si-profile-name">Lucia Libertaria</span><span class="si-profile-handle">| lucialibertaria.ok</span></div>
               <div class="si-profile-stats"><b>87</b> Seguidos <b>16,4 mil</b> Seguidores <b>61</b> Publicaciones</div>
@@ -469,7 +499,7 @@ input[type="radio"].si-radio{display:none;}
 
         <div class="si-panel" id="si-panel-tk">
           <div class="si-profile-card">
-            <div class="si-profile-pic"><img src="Perfil TIKTOK.png" alt="Perfil TikTok"></div>
+            <div class="si-profile-pic"><img src="FOTO DE PERFIL.png" alt="Perfil TikTok"></div>
             <div class="si-profile-info">
               <div class="si-profile-name-row"><span class="si-profile-name">Lucia Libertaria</span><span class="si-profile-handle">| lucialibertaria.ok</span></div>
               <div class="si-profile-stats"><b>20</b> Siguiendo <b>6477</b> Seguidores <b>56,6K</b> Me gusta</div>
@@ -505,7 +535,7 @@ input[type="radio"].si-radio{display:none;}
 
         <div class="si-panel" id="si-panel-fb">
           <div class="si-profile-card">
-            <div class="si-profile-pic"><img src="perfil fb.png" alt="Perfil Facebook"></div>
+            <div class="si-profile-pic"><img src="FOTO DE PERFIL.png" alt="Perfil Facebook"></div>
             <div class="si-profile-info">
               <div class="si-profile-name-row"><span class="si-profile-name">Lucialibertaria.ok</span><span class="si-profile-handle">(Lucia Libertaria)</span></div>
               <div class="si-profile-stats"><b>487</b> seguidores · <b>1</b> seguido</div>
@@ -537,8 +567,6 @@ input[type="radio"].si-radio{display:none;}
 
       </div>
     </div>
-
-    <div class="footer-note">Fuente: Encuesta propia "InfluencIA".</div>
   </div>
 </section>
 
@@ -549,11 +577,29 @@ input[type="radio"].si-radio{display:none;}
 
       <div class="si-pie-card">
         <h3>Distribución de seguidores</h3>
-        <div class="si-pie"></div>
+        <div class="si-pie-wrap">
+          <div class="si-pie"></div>
+          <div class="si-pie-hole">
+            <div class="si-pie-hole-val">23,4k</div>
+            <div class="si-pie-hole-lab">Total</div>
+          </div>
+        </div>
         <div class="si-pie-legend">
-          <div><span class="dot" style="background:var(--magenta);"></span>Instagram — 70% (16.400)</div>
-          <div><span class="dot" style="background:var(--purple);"></span>TikTok — 28% (6.477)</div>
-          <div><span class="dot" style="background:var(--yellow);"></span>Facebook — 2% (487)</div>
+          <div class="si-pie-legend-row">
+            <span class="dot" style="background:var(--magenta);"></span>
+            <span class="si-pie-legend-text"><b>Instagram</b> — 16.400</span>
+            <div class="si-pie-legend-bar"><div class="si-pie-legend-bar-fill" style="width:70%;background:var(--magenta);"></div></div>
+          </div>
+          <div class="si-pie-legend-row">
+            <span class="dot" style="background:var(--purple);"></span>
+            <span class="si-pie-legend-text"><b>TikTok</b> — 6.477</span>
+            <div class="si-pie-legend-bar"><div class="si-pie-legend-bar-fill" style="width:28%;background:var(--purple);"></div></div>
+          </div>
+          <div class="si-pie-legend-row">
+            <span class="dot" style="background:var(--yellow);"></span>
+            <span class="si-pie-legend-text"><b>Facebook</b> — 487</span>
+            <div class="si-pie-legend-bar"><div class="si-pie-legend-bar-fill" style="width:2%;background:var(--yellow);"></div></div>
+          </div>
         </div>
       </div>
 
