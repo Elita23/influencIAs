@@ -1,4 +1,4 @@
-<html data-type="html" data-identifier="b6a814e8-670b-47f8-8d1d-ed55946771a3" data-title="Dashboard InfluencIA - Encuesta" data-version="38" imagemodel="imagen-4"><head></head>
+<html data-type="html" data-identifier="b6a814e8-670b-47f8-8d1d-ed55946771a3" data-title="Dashboard InfluencIA - Encuesta" data-version="39" imagemodel="imagen-4"><head></head>
 <body style="margin:0;">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,400&display=swap');
@@ -72,6 +72,8 @@ a{color:inherit;text-decoration:none;}
 .typewriter-title .tw-text{display:inline-block;white-space:nowrap;clip-path:inset(0 100% 0 0);animation:titleTyping 2.4s steps(34,end) forwards;}
 .typewriter-title .tw-cursor{display:inline-block;width:3px;height:1.4rem;background:var(--magenta);margin-left:2px;animation:blinkTitleCursor 0.8s step-end infinite;}
 @keyframes titleTyping{from{clip-path:inset(0 100% 0 0);}to{clip-path:inset(0 0% 0 0);}}
+@keyframes titleTyping2{from{clip-path:inset(0 100% 0 0);}to{clip-path:inset(0 0% 0 0);}}
+@keyframes titleTyping3{from{clip-path:inset(0 100% 0 0);}to{clip-path:inset(0 0% 0 0);}}
 @keyframes blinkTitleCursor{50%{opacity:0;}}
 .filter-bar{display:flex;gap:12px;flex-wrap:wrap;margin-bottom:36px;}
 input[type="radio"].age-radio{display:none;}
@@ -136,8 +138,7 @@ label.age-btn:hover{background:rgba(255,255,255,0.08);}
 .fbe-conclusion .tag{display:inline-block;background:var(--yellow);color:#111;font-size:0.72rem;font-weight:800;letter-spacing:1px;padding:4px 10px;border-radius:20px;margin-bottom:14px;}
 @media (max-width:900px){.demo-row{grid-template-columns:1fr;}.fbe-panel-grid{grid-template-columns:1fr;}.callout-row{grid-template-columns:1fr;}}
 
-.si-block{margin-top:60px;}
-.si-title{color:var(--magenta);font-size:1.6rem;font-weight:800;margin-bottom:24px;}
+.si-block{margin-top:0;}
 .si-icons-row{display:flex;gap:16px;margin-bottom:0;flex-wrap:wrap;}
 input[type="radio"].si-radio{display:none;}
 .si-icon-btn{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:4px 4px 0 #111;border:2px solid #111;transition:transform .15s ease;}
@@ -195,49 +196,47 @@ input[type="radio"].si-radio{display:none;}
 .b-yellow .si-badge-val,.b-yellow .si-badge-lab{color:#1a1400;}
 .b-purple{background:var(--purple);}
 .si-disc{font-size:.75rem;color:#8b89a3;font-style:italic;margin-top:14px;grid-column:1/-1;}
-.si-standby{color:#8b89a3;text-align:center;padding:60px 20px;border:1px dashed rgba(255,255,255,.15);border-radius:14px;font-style:italic;}
+.si-standby{color:#8b89a3;text-align:center;padding:60px 20px;border:1px dashed rgba(0,0,0,.15);border-radius:14px;font-style:italic;}
 @media (max-width:900px){.si-grid{grid-template-columns:1fr;}}
 
-.si-compare{background:#f3f1ec;padding:60px 4vw;}
-.si-compare-inner{max-width:var(--page-max);margin:0 auto;}
-.si-compare-title{color:var(--magenta);font-size:1.6rem;font-weight:800;margin-bottom:30px;text-align:left;}
+.si-compare-inner{max-width:var(--page-max);margin:0 auto;position:relative;z-index:2;}
 .si-compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:stretch;}
-.si-pie-card{background:#fff;border:1px solid rgba(0,0,0,0.06);border-radius:20px;padding:32px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.08);display:flex;flex-direction:column;justify-content:center;}
-.si-pie-card h3{color:#111;font-size:1.05rem;font-weight:800;margin:0 0 24px;}
+.si-pie-card{background:var(--dark-bg2);border:1px solid rgba(255,255,255,0.08);border-radius:20px;padding:32px;text-align:center;box-shadow:0 10px 30px rgba(0,0,0,0.3);display:flex;flex-direction:column;justify-content:center;}
+.si-pie-card h3{color:#fff;font-size:1.05rem;font-weight:800;margin:0 0 24px;}
 .si-pie-wrap{position:relative;width:200px;height:200px;margin:0 auto 24px;}
 .si-pie{
   width:200px;height:200px;border-radius:50%;
   background:conic-gradient(
     var(--magenta) 0deg 252deg,
-    #fff 252deg 254deg,
+    var(--dark-bg2) 252deg 254deg,
     var(--purple) 254deg 354deg,
-    #fff 354deg 356deg,
+    var(--dark-bg2) 354deg 356deg,
     var(--yellow) 356deg 360deg
   );
-  filter:drop-shadow(0 6px 14px rgba(236,28,179,0.18));
+  filter:drop-shadow(0 6px 14px rgba(236,28,179,0.25));
 }
 .si-pie-hole{
   position:absolute;inset:32px;
-  background:#fff;border-radius:50%;
+  background:var(--dark-bg2);border-radius:50%;
   display:flex;flex-direction:column;align-items:center;justify-content:center;
-  box-shadow:inset 0 2px 6px rgba(0,0,0,0.06);
+  box-shadow:inset 0 2px 6px rgba(0,0,0,0.3);
 }
-.si-pie-hole-val{font-size:1.5rem;font-weight:800;color:#111;}
-.si-pie-hole-lab{font-size:0.68rem;color:#888;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
+.si-pie-hole-val{font-size:1.5rem;font-weight:800;color:#fff;}
+.si-pie-hole-lab{font-size:0.68rem;color:#8b89a3;text-transform:uppercase;letter-spacing:0.5px;margin-top:2px;}
 .si-pie-legend{display:flex;flex-direction:column;gap:12px;text-align:left;}
 .si-pie-legend-row{display:flex;align-items:center;gap:10px;}
 .si-pie-legend .dot{display:inline-block;width:11px;height:11px;border-radius:3px;flex-shrink:0;}
-.si-pie-legend-text{font-size:0.85rem;color:#333;flex:1;}
-.si-pie-legend-text b{font-weight:800;color:#111;}
-.si-pie-legend-bar{width:60px;height:6px;border-radius:6px;background:#eee;overflow:hidden;flex-shrink:0;}
+.si-pie-legend-text{font-size:0.85rem;color:#e4e2f0;flex:1;}
+.si-pie-legend-text b{font-weight:800;color:#fff;}
+.si-pie-legend-bar{width:60px;height:6px;border-radius:6px;background:rgba(255,255,255,0.1);overflow:hidden;flex-shrink:0;}
 .si-pie-legend-bar-fill{height:100%;border-radius:6px;}
 .si-winners{display:flex;flex-direction:column;gap:14px;}
-.si-winner{background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:14px;padding:16px 20px;box-shadow:6px 6px 0 rgba(0,0,0,0.06);}
+.si-winner{background:var(--dark-bg2);border:1px solid rgba(255,255,255,0.08);border-radius:14px;padding:16px 20px;box-shadow:0 6px 16px rgba(0,0,0,0.2);}
 .si-winner-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
-.si-winner-label{color:#555;font-size:0.85rem;}
-.si-winner-net{color:#111;font-weight:800;font-size:1.05rem;}
-.si-winner-net span{color:var(--magenta);}
-.si-winner-why{color:#666;font-size:0.82rem;line-height:1.4;font-style:italic;}
+.si-winner-label{color:#8b89a3;font-size:0.85rem;}
+.si-winner-net{color:#fff;font-weight:800;font-size:1.05rem;}
+.si-winner-net span{color:var(--cyan);}
+.si-winner-why{color:#b8b6cc;font-size:0.82rem;line-height:1.4;font-style:italic;}
 @media (max-width:900px){.si-compare-grid{grid-template-columns:1fr;}}
 </style>
 
@@ -449,10 +448,12 @@ input[type="radio"].si-radio{display:none;}
   </div>
 </section>
 
-<section class="dark-section grain-dark" style="padding-top:80px;">
-  <div class="dark-content">
-    <div class="si-block" style="margin-top:0;">
-      <div class="si-title">Métricas por red social</div>
+<section class="hero grain-light" style="padding:80px 4vw;">
+  <div class="float-shape sq float-a" style="top:20px;left:24px;background:var(--magenta);"></div>
+  <div class="float-shape sq float-b" style="top:60px;left:34px;background:var(--yellow);"></div>
+  <div style="max-width:var(--page-max);margin:0 auto;position:relative;z-index:2;">
+    <div class="si-block">
+      <h2 class="typewriter-title" style="margin-bottom:24px;"><span class="tw-text" style="animation:titleTyping2 2s steps(24,end) forwards;">Métricas por red social</span><span class="tw-cursor"></span></h2>
 
       <input type="radio" name="si-network" id="si-ig" class="si-radio" checked="checked">
       <input type="radio" name="si-network" id="si-tk" class="si-radio">
@@ -570,9 +571,11 @@ input[type="radio"].si-radio{display:none;}
   </div>
 </section>
 
-<section class="si-compare">
+<section class="dark-section grain-dark">
+  <div class="float-shape sq float-a" style="top:80px;left:6%;background:var(--magenta);"></div>
+  <div class="float-shape sq float-b" style="top:220px;left:2%;background:var(--yellow);"></div>
   <div class="si-compare-inner">
-    <div class="si-compare-title">Comparativa entre redes sociales</div>
+    <h2 class="typewriter-title" style="margin-bottom:30px;"><span class="tw-text" style="animation:titleTyping3 2.4s steps(33,end) forwards;">Comparativa entre redes sociales</span><span class="tw-cursor"></span></h2>
     <div class="si-compare-grid">
 
       <div class="si-pie-card">
