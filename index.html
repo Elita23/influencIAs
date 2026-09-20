@@ -1,4 +1,4 @@
-<html data-type="html" data-identifier="b6a814e8-670b-47f8-8d1d-ed55946771a3" data-title="Dashboard InfluencIA - Encuesta" data-version="31" imagemodel="imagen-4"><head></head>
+<html data-type="html" data-identifier="b6a814e8-670b-47f8-8d1d-ed55946771a3" data-title="Dashboard InfluencIA - Encuesta" data-version="36" imagemodel="imagen-4"><head></head>
 <body style="margin:0;">
 <style>
 @import url('https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,300;0,9..144,400;1,9..144,400&display=swap');
@@ -39,9 +39,9 @@ a{color:inherit;text-decoration:none;}
 .hero-desc{font-family:'Fraunces', Georgia, serif;font-size:1.35rem;line-height:1.55;font-weight:400;letter-spacing:0.2px;color:#1a1a1a;max-width:540px;}
 .col-mid{display:flex;align-items:flex-start;justify-content:center;gap:18px;min-width:0;padding-top:0;}
 .influencer-frame{position:relative;width:100%;max-width:340px;aspect-ratio:3/4.2;border:6px solid #111;box-shadow:14px 14px 0 var(--magenta);background:#ccc;overflow:hidden;flex-shrink:1;min-width:0;}
-.influencer-frame img,.influencer-frame video{width:100%;height:100%;object-fit:cover;display:block;}
+.influencer-frame img{width:100%;height:100%;object-fit:cover;display:block;}
 .social-icons{display:flex;flex-direction:column;gap:16px;padding-top:0;flex-shrink:0;}
-.social-icons a{width:46px;height:46px;display:flex;align-items:center;justify-content:center;border-radius:11px;box-shadow:4px 4px 0 #111;border:2px solid #111;}
+.social-icons span{width:46px;height:46px;display:flex;align-items:center;justify-content:center;border-radius:11px;box-shadow:4px 4px 0 #111;border:2px solid #111;}
 .social-icons svg{width:24px;height:24px;fill:#fff;}
 .ig{background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%);}
 .tk{background:#111;}
@@ -135,6 +135,86 @@ label.age-btn:hover{background:rgba(255,255,255,0.08);}
 .fbe-conclusion{background:linear-gradient(135deg,rgba(236,28,179,0.15),rgba(55,215,242,0.1));border-left:4px solid var(--cyan);border-radius:10px;padding:28px 32px;font-size:1.2rem;line-height:1.6;font-weight:500;margin-top:12px;width:100%;color:#fff;}
 .fbe-conclusion .tag{display:inline-block;background:var(--yellow);color:#111;font-size:0.72rem;font-weight:800;letter-spacing:1px;padding:4px 10px;border-radius:20px;margin-bottom:14px;}
 @media (max-width:900px){.demo-row{grid-template-columns:1fr;}.fbe-panel-grid{grid-template-columns:1fr;}.callout-row{grid-template-columns:1fr;}}
+
+.si-block{margin-top:60px;}
+.si-title{color:var(--magenta);font-size:1.6rem;font-weight:800;margin-bottom:24px;}
+.si-icons-row{display:flex;gap:16px;margin-bottom:0;flex-wrap:wrap;}
+input[type="radio"].si-radio{display:none;}
+.si-icon-btn{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;cursor:pointer;box-shadow:4px 4px 0 #111;border:2px solid #111;transition:transform .15s ease;}
+.si-icon-btn:hover{transform:translateY(-2px);}
+.si-icon-btn svg{width:28px;height:28px;fill:#fff;}
+.si-ig{background:radial-gradient(circle at 30% 107%,#fdf497 0%,#fdf497 5%,#fd5949 45%,#d6249f 60%,#285AEB 90%);}
+.si-tk{background:#111;}
+.si-fb{background:#1877f2;}
+.si-x{background:#000;}
+#si-ig:checked ~ .si-icons-row label[for="si-ig"]{box-shadow:4px 4px 0 var(--magenta),0 0 0 3px #fff;}
+#si-tk:checked ~ .si-icons-row label[for="si-tk"]{box-shadow:4px 4px 0 var(--magenta),0 0 0 3px #fff;}
+#si-fb:checked ~ .si-icons-row label[for="si-fb"]{box-shadow:4px 4px 0 var(--magenta),0 0 0 3px #fff;}
+#si-x:checked ~ .si-icons-row label[for="si-x"]{box-shadow:4px 4px 0 var(--magenta),0 0 0 3px #fff;}
+.si-panel{display:none;margin-top:24px;}
+#si-ig:checked ~ .si-panels #si-panel-ig,
+#si-tk:checked ~ .si-panels #si-panel-tk,
+#si-fb:checked ~ .si-panels #si-panel-fb,
+#si-x:checked ~ .si-panels #si-panel-x{display:block;}
+.si-grid{display:grid;grid-template-columns:1fr 1fr;gap:28px;align-items:start;}
+.si-comment{background:#fff;border-radius:16px;box-shadow:0 6px 18px rgba(0,0,0,.25);padding:16px 18px;display:flex;gap:12px;margin-bottom:16px;opacity:0;transform:translateY(14px);animation:siFade .5s ease-out forwards;}
+.si-comment:nth-child(1){animation-delay:.2s;}
+.si-comment:nth-child(2){animation-delay:.9s;}
+.si-comment:nth-child(3){animation-delay:1.6s;}
+@keyframes siFade{to{opacity:1;transform:translateY(0);}}
+.si-avatar{width:40px;height:40px;border-radius:50%;background:#e4e4e4;display:flex;align-items:center;justify-content:center;flex-shrink:0;overflow:hidden;}
+.si-avatar svg{width:22px;height:22px;fill:#9aa5b1;}
+.si-user{font-weight:800;font-size:.9rem;color:#111;}
+.si-text{font-size:.88rem;margin:4px 0 8px;color:#222;}
+.si-meta{font-size:.8rem;color:#8e8e8e;display:flex;gap:14px;}
+.si-profile-card{background:#26262a;border-radius:18px;padding:24px 28px;display:flex;gap:22px;align-items:flex-start;margin-bottom:22px;}
+.si-profile-pic{width:100px;height:100px;border-radius:50%;flex-shrink:0;overflow:hidden;border:2px solid #444;}
+.si-profile-pic img{width:100%;height:100%;object-fit:cover;display:block;}
+.si-profile-info{color:#fff;flex:1;}
+.si-profile-name-row{display:flex;align-items:baseline;gap:10px;margin-bottom:8px;flex-wrap:wrap;}
+.si-profile-name{font-weight:800;font-size:1.3rem;}
+.si-profile-handle{color:#a8a8a8;font-size:1rem;}
+.si-profile-stats{font-size:0.95rem;margin-bottom:12px;color:#e0e0e0;}
+.si-profile-stats b{font-weight:800;color:#fff;}
+.si-profile-actions{display:flex;gap:10px;margin-bottom:16px;flex-wrap:wrap;}
+.si-btn-follow{background:#f0555a;color:#fff;font-weight:700;border-radius:20px;padding:10px 22px;font-size:0.9rem;}
+.si-btn-msg{background:#2a2a2a;color:#fff;font-weight:700;border-radius:20px;padding:10px 22px;font-size:0.9rem;}
+.si-btn-icon{background:#2a2a2a;color:#fff;width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;}
+.si-btn-icon svg{width:16px;height:16px;fill:none;stroke:#fff;stroke-width:2;}
+.si-profile-bio{color:#e4e2f0;font-size:0.9rem;line-height:1.5;}
+.si-profile-link{color:#6ec8ff;font-size:0.9rem;margin-top:6px;display:flex;align-items:center;gap:6px;}
+.si-profile-tag{color:#c9c9c9;font-size:0.9rem;margin-top:10px;display:flex;align-items:center;gap:6px;}
+.si-badges{display:grid;grid-template-columns:repeat(2,1fr);gap:14px;}
+.si-badge{border-radius:14px;padding:18px 16px;display:flex;flex-direction:column;gap:6px;}
+.si-badge-val{font-size:1.6rem;font-weight:800;color:#fff;}
+.si-badge-lab{font-size:0.78rem;color:rgba(255,255,255,0.85);font-weight:600;}
+.b-magenta{background:var(--magenta);}
+.b-cyan{background:var(--cyan);}
+.b-cyan .si-badge-val,.b-cyan .si-badge-lab{color:#0c1620;}
+.b-yellow{background:var(--yellow);}
+.b-yellow .si-badge-val,.b-yellow .si-badge-lab{color:#1a1400;}
+.b-purple{background:var(--purple);}
+.si-disc{font-size:.75rem;color:#8b89a3;font-style:italic;margin-top:14px;grid-column:1/-1;}
+.si-standby{color:#8b89a3;text-align:center;padding:60px 20px;border:1px dashed rgba(255,255,255,.15);border-radius:14px;font-style:italic;}
+@media (max-width:900px){.si-grid{grid-template-columns:1fr;}}
+
+.si-compare{background:#f3f1ec;padding:60px 4vw;}
+.si-compare-inner{max-width:var(--page-max);margin:0 auto;}
+.si-compare-title{color:var(--magenta);font-size:1.6rem;font-weight:800;margin-bottom:30px;text-align:left;}
+.si-compare-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;align-items:stretch;}
+.si-pie-card{background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:16px;padding:28px;text-align:center;box-shadow:6px 6px 0 rgba(0,0,0,0.06);display:flex;flex-direction:column;justify-content:center;}
+.si-pie-card h3{color:#111;font-size:1rem;margin:0 0 20px;}
+.si-pie{width:180px;height:180px;border-radius:50%;margin:0 auto 20px;background:conic-gradient(var(--magenta) 0% 70%,var(--purple) 70% 98%,var(--yellow) 98% 100%);border:4px solid #111;}
+.si-pie-legend{text-align:left;font-size:0.85rem;line-height:1.9;color:#333;}
+.si-pie-legend .dot{display:inline-block;width:12px;height:12px;border-radius:3px;margin-right:8px;}
+.si-winners{display:flex;flex-direction:column;gap:14px;}
+.si-winner{background:#fff;border:1px solid rgba(0,0,0,0.08);border-radius:14px;padding:16px 20px;box-shadow:6px 6px 0 rgba(0,0,0,0.06);}
+.si-winner-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;}
+.si-winner-label{color:#555;font-size:0.85rem;}
+.si-winner-net{color:#111;font-weight:800;font-size:1.05rem;}
+.si-winner-net span{color:var(--magenta);}
+.si-winner-why{color:#666;font-size:0.82rem;line-height:1.4;font-style:italic;}
+@media (max-width:900px){.si-compare-grid{grid-template-columns:1fr;}}
 </style>
 
 <section class="hero grain-light">
@@ -161,9 +241,9 @@ label.age-btn:hover{background:rgba(255,255,255,0.08);}
     <div class="col-mid">
       <div class="influencer-frame"><img src="ezgif.com-gif-maker.gif" alt="Retrato de influencer política creada con IA"></div>
       <div class="social-icons">
-        <a class="ig" href="#" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path></svg></a>
-        <a class="tk" href="#" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6c0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64c0 3.33 2.76 5.7 5.69 5.7c3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.03 1.2V7.13s-1.94.09-3.37-1.31z"></path></svg></a>
-        <a class="fb" href="#" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.6 0 0 .6 0 1.325v21.351C0 23.4.6 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.098 2.795.142v3.24l-1.918.001c-1.504 0-1.795.716-1.795 1.765v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.4 24 24 23.4 24 22.676V1.325C24 .6 23.4 0 22.675 0z"></path></svg></a>
+        <span class="ig" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path></svg></span>
+        <span class="tk" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6c0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64c0 3.33 2.76 5.7 5.69 5.7c3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.03 1.2V7.13s-1.94.09-3.37-1.31z"></path></svg></span>
+        <span class="fb" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.6 0 0 .6 0 1.325v21.351C0 23.4.6 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.098 2.795.142v3.24l-1.918.001c-1.504 0-1.795.716-1.795 1.765v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.4 24 24 23.4 24 22.676V1.325C24 .6 23.4 0 22.675 0z"></path></svg></span>
       </div>
     </div>
     <div class="col-right">
@@ -341,7 +421,166 @@ label.age-btn:hover{background:rgba(255,255,255,0.08);}
       </div>
     </div>
 
-    <div class="footer-note">Fuente: Encuesta propia "InfluencIA" — Datos leídos en vivo desde Google Sheets (pestaña "form").</div>
+    <div class="si-block">
+      <div class="si-title">Métricas por red social</div>
+
+      <input type="radio" name="si-network" id="si-ig" class="si-radio" checked="checked">
+      <input type="radio" name="si-network" id="si-tk" class="si-radio">
+      <input type="radio" name="si-network" id="si-fb" class="si-radio">
+      <input type="radio" name="si-network" id="si-x" class="si-radio">
+
+      <div class="si-icons-row">
+        <label class="si-icon-btn si-ig" for="si-ig" aria-label="Instagram"><svg viewBox="0 0 24 24"><path d="M12 2.163c3.204 0 3.584.012 4.85.07 3.252.148 4.771 1.691 4.919 4.919.058 1.265.069 1.645.069 4.849 0 3.205-.012 3.584-.069 4.849-.149 3.225-1.664 4.771-4.919 4.919-1.266.058-1.644.07-4.85.07-3.204 0-3.584-.012-4.849-.07-3.26-.149-4.771-1.699-4.919-4.92-.058-1.265-.07-1.644-.07-4.849 0-3.204.013-3.583.07-4.849.149-3.227 1.664-4.771 4.919-4.919 1.266-.057 1.645-.069 4.849-.069zM12 0C8.741 0 8.333.014 7.053.072 2.695.272.273 2.69.073 7.052.014 8.333 0 8.741 0 12c0 3.259.014 3.668.072 4.948.2 4.358 2.618 6.78 6.98 6.98C8.333 23.986 8.741 24 12 24c3.259 0 3.668-.014 4.948-.072 4.354-.2 6.782-2.618 6.979-6.98.059-1.28.073-1.689.073-4.948 0-3.259-.014-3.667-.072-4.947-.196-4.354-2.617-6.78-6.979-6.98C15.668.014 15.259 0 12 0zm0 5.838a6.162 6.162 0 100 12.324 6.162 6.162 0 000-12.324zM12 16a4 4 0 110-8 4 4 0 010 8zm6.406-11.845a1.44 1.44 0 100 2.881 1.44 1.44 0 000-2.881z"></path></svg></label>
+        <label class="si-icon-btn si-tk" for="si-tk" aria-label="TikTok"><svg viewBox="0 0 24 24"><path d="M16.6 5.82s.51.5 0 0A4.278 4.278 0 0 1 15.54 3h-3.09v12.4a2.592 2.592 0 0 1-2.59 2.5c-1.42 0-2.6-1.16-2.6-2.6c0-1.72 1.66-3.01 3.37-2.48V9.66c-3.45-.46-6.47 2.22-6.47 5.64c0 3.33 2.76 5.7 5.69 5.7c3.14 0 5.69-2.55 5.69-5.7V9.01a7.35 7.35 0 0 0 4.03 1.2V7.13s-1.94.09-3.37-1.31z"></path></svg></label>
+        <label class="si-icon-btn si-fb" for="si-fb" aria-label="Facebook"><svg viewBox="0 0 24 24"><path d="M22.675 0h-21.35C.6 0 0 .6 0 1.325v21.351C0 23.4.6 24 1.325 24H12.82v-9.294H9.692v-3.622h3.128V8.413c0-3.1 1.893-4.788 4.659-4.788 1.325 0 2.463.098 2.795.142v3.24l-1.918.001c-1.504 0-1.795.716-1.795 1.765v2.313h3.587l-.467 3.622h-3.12V24h6.116C23.4 24 24 23.4 24 22.676V1.325C24 .6 23.4 0 22.675 0z"></path></svg></label>
+        <label class="si-icon-btn si-x" for="si-x" aria-label="X"><svg viewBox="0 0 24 24"><path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-5.214-6.817L4.99 21.75H1.68l7.73-8.835L1.254 2.25H8.08l4.713 6.231zm-1.161 17.52h1.833L7.084 4.126H5.117z"></path></svg></label>
+      </div>
+
+      <div class="si-panels">
+
+        <div class="si-panel" id="si-panel-ig">
+          <div class="si-profile-card">
+            <div class="si-profile-pic"><img src="Perfil IG Lucia.png" alt="Perfil Instagram"></div>
+            <div class="si-profile-info">
+              <div class="si-profile-name-row"><span class="si-profile-name">Lucia Libertaria</span><span class="si-profile-handle">| lucialibertaria.ok</span></div>
+              <div class="si-profile-stats"><b>87</b> Seguidos <b>16,4 mil</b> Seguidores <b>61</b> Publicaciones</div>
+              <div class="si-profile-bio">Buenos Aires 🇦🇷<br>De derecha. Libertaria. Me gusta informar sin vueltas.</div>
+            </div>
+          </div>
+          <div class="si-grid">
+            <div>
+              <div class="si-comment"><div class="si-avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"></path></svg></div><div><div class="si-user">ml5613497usebio</div><div class="si-text">Tenemos que hir y haser una marcha apoyando al presidente Miley 🦁💜</div><div class="si-meta"><span>121 likes</span><span>Reply</span></div></div></div>
+              <div class="si-comment"><div class="si-avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"></path></svg></div><div><div class="si-user">gaston_micu</div><div class="si-text">No les está lllegando el sobre y les da mucha bronca.</div><div class="si-meta"><span>121 likes</span><span>Reply</span></div></div></div>
+              <div class="si-comment"><div class="si-avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"></path></svg></div><div><div class="si-user">robert1982.mp</div><div class="si-text">Bella e inteligente 🙌🔥🇦🇷💜</div><div class="si-meta"><span>121 likes</span><span>Reply</span></div></div></div>
+            </div>
+            <div class="si-badges">
+              <div class="si-badge b-magenta"><div class="si-badge-val">16.400</div><div class="si-badge-lab">Seguidores</div></div>
+              <div class="si-badge b-cyan"><div class="si-badge-val">87</div><div class="si-badge-lab">Siguiendo</div></div>
+              <div class="si-badge b-yellow"><div class="si-badge-val">229</div><div class="si-badge-lab">Comentarios promedio</div></div>
+              <div class="si-badge b-purple"><div class="si-badge-val">N/D</div><div class="si-badge-lab">Me gusta (oculto)</div></div>
+              <div class="si-badge b-cyan"><div class="si-badge-val">198</div><div class="si-badge-lab">Republicaciones prom.</div></div>
+              <div class="si-badge b-magenta"><div class="si-badge-val">110</div><div class="si-badge-lab">Compartidos promedio</div></div>
+              <div class="si-badge b-purple"><div class="si-badge-val">70</div><div class="si-badge-lab">Guardados promedio</div></div>
+              <div class="si-badge b-yellow"><div class="si-badge-val">124,2k</div><div class="si-badge-lab">Visualizaciones prom.</div></div>
+              <div class="si-disc">*Información estimada en base a las últimas 5 publicaciones.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="si-panel" id="si-panel-tk">
+          <div class="si-profile-card">
+            <div class="si-profile-pic"><img src="Perfil TIKTOK.png" alt="Perfil TikTok"></div>
+            <div class="si-profile-info">
+              <div class="si-profile-name-row"><span class="si-profile-name">Lucia Libertaria</span><span class="si-profile-handle">| lucialibertaria.ok</span></div>
+              <div class="si-profile-stats"><b>20</b> Siguiendo <b>6477</b> Seguidores <b>56,6K</b> Me gusta</div>
+              <div class="si-profile-actions">
+                <div class="si-btn-follow">Seguir</div>
+                <div class="si-btn-msg">Mensaje</div>
+                <div class="si-btn-icon"><svg viewBox="0 0 24 24"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M19 8v6M22 11h-6"></path></svg></div>
+                <div class="si-btn-icon"><svg viewBox="0 0 24 24"><path d="M22 2L11 13"></path><path d="M22 2l-7 20-4-9-9-4 20-7z"></path></svg></div>
+                <div class="si-btn-icon"><svg viewBox="0 0 24 24"><circle cx="5" cy="12" r="1.5"></circle><circle cx="12" cy="12" r="1.5"></circle><circle cx="19" cy="12" r="1.5"></circle></svg></div>
+              </div>
+              <div class="si-profile-bio">Buenos Aires 🇦🇷<br>De derecha. Libertaria. Me gusta informar sin vueltas.</div>
+              <div class="si-profile-link">🔗 linktr.ee/lucialibertaria</div>
+            </div>
+          </div>
+          <div class="si-grid">
+            <div>
+              <div class="si-comment"><div class="si-avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"></path></svg></div><div><div class="si-user">Argentum</div><div class="si-text">nadie se da cuenta de que es IA?</div><div class="si-meta"><span>Reply</span></div></div></div>
+              <div class="si-comment"><div class="si-avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"></path></svg></div><div><div class="si-user">Otto</div><div class="si-text">Nose lo que dijo estaba perdido en su linda carita 😳🥰🥰</div><div class="si-meta"><span>Reply</span></div></div></div>
+              <div class="si-comment"><div class="si-avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"></path></svg></div><div><div class="si-user">il javo</div><div class="si-text">totalmente como decís 🌹</div><div class="si-meta"><span>Reply</span></div></div></div>
+            </div>
+            <div class="si-badges">
+              <div class="si-badge b-magenta"><div class="si-badge-val">6.477</div><div class="si-badge-lab">Seguidores</div></div>
+              <div class="si-badge b-cyan"><div class="si-badge-val">20</div><div class="si-badge-lab">Siguiendo</div></div>
+              <div class="si-badge b-yellow"><div class="si-badge-val">56,6K</div><div class="si-badge-lab">Me gusta totales</div></div>
+              <div class="si-badge b-purple"><div class="si-badge-val">124</div><div class="si-badge-lab">Comentarios promedio</div></div>
+              <div class="si-badge b-cyan"><div class="si-badge-val">93</div><div class="si-badge-lab">Guardados promedio</div></div>
+              <div class="si-badge b-magenta"><div class="si-badge-val">139</div><div class="si-badge-lab">Shares promedio</div></div>
+              <div class="si-badge b-yellow"><div class="si-badge-val">20.147</div><div class="si-badge-lab">Views promedio</div></div>
+              <div class="si-disc">*Información estimada en base a las últimas 5 publicaciones.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="si-panel" id="si-panel-fb">
+          <div class="si-profile-card">
+            <div class="si-profile-pic"><img src="perfil fb.png" alt="Perfil Facebook"></div>
+            <div class="si-profile-info">
+              <div class="si-profile-name-row"><span class="si-profile-name">Lucialibertaria.ok</span><span class="si-profile-handle">(Lucia Libertaria)</span></div>
+              <div class="si-profile-stats"><b>487</b> seguidores · <b>1</b> seguido</div>
+              <div class="si-profile-bio">Buenos Aires 🇦🇷<br>De derecha. Libertaria. Me gusta informar sin vueltas.</div>
+              <div class="si-profile-tag">📇 Bloguero(a)</div>
+            </div>
+          </div>
+          <div class="si-grid">
+            <div>
+              <div class="si-comment"><div class="si-avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"></path></svg></div><div><div class="si-user">Ricardo San</div><div class="si-text">#FueraMilei</div><div class="si-meta"><span>Reply</span></div></div></div>
+              <div class="si-comment"><div class="si-avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"></path></svg></div><div><div class="si-user">Javier Milei Noticias</div><div class="si-text">Gracias presidente!</div><div class="si-meta"><span>Reply</span></div></div></div>
+              <div class="si-comment"><div class="si-avatar"><svg viewBox="0 0 24 24"><circle cx="12" cy="8" r="4"></circle><path d="M4 20c0-4 3.5-7 8-7s8 3 8 7"></path></svg></div><div><div class="si-user">Roberto Maranguello</div><div class="si-text">Noticias falsas es un avatar de IA</div><div class="si-meta"><span>Reply</span></div></div></div>
+            </div>
+            <div class="si-badges">
+              <div class="si-badge b-magenta"><div class="si-badge-val">487</div><div class="si-badge-lab">Seguidores</div></div>
+              <div class="si-badge b-cyan"><div class="si-badge-val">1</div><div class="si-badge-lab">Seguido</div></div>
+              <div class="si-badge b-yellow"><div class="si-badge-val">14</div><div class="si-badge-lab">Likes promedio</div></div>
+              <div class="si-badge b-purple"><div class="si-badge-val">1,8</div><div class="si-badge-lab">Compartidos promedio</div></div>
+              <div class="si-badge b-cyan"><div class="si-badge-val">2,2</div><div class="si-badge-lab">Comentarios promedio</div></div>
+              <div class="si-badge b-magenta"><div class="si-badge-val">0,8</div><div class="si-badge-lab">Guardados promedio</div></div>
+              <div class="si-disc">*Información estimada en base a las últimas 5 publicaciones.</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="si-panel" id="si-panel-x">
+          <div class="si-standby">Cuenta de X en stand by — sin acceso disponible por el momento.</div>
+        </div>
+
+      </div>
+    </div>
+
+    <div class="footer-note">Fuente: Encuesta propia "InfluencIA".</div>
+  </div>
+</section>
+
+<section class="si-compare">
+  <div class="si-compare-inner">
+    <div class="si-compare-title">Comparativa entre redes sociales</div>
+    <div class="si-compare-grid">
+
+      <div class="si-pie-card">
+        <h3>Distribución de seguidores</h3>
+        <div class="si-pie"></div>
+        <div class="si-pie-legend">
+          <div><span class="dot" style="background:var(--magenta);"></span>Instagram — 70% (16.400)</div>
+          <div><span class="dot" style="background:var(--purple);"></span>TikTok — 28% (6.477)</div>
+          <div><span class="dot" style="background:var(--yellow);"></span>Facebook — 2% (487)</div>
+        </div>
+      </div>
+
+      <div class="si-winners">
+        <div class="si-winner">
+          <div class="si-winner-top"><span class="si-winner-label">Más seguidores</span><span class="si-winner-net"><span>Instagram</span> · 16.400</span></div>
+          <div class="si-winner-why">Es la red donde más tiempo lleva construyendo comunidad y donde más contenido publica (61 posts), lo que explica su base más consolidada.</div>
+        </div>
+        <div class="si-winner">
+          <div class="si-winner-top"><span class="si-winner-label">Más comentarios promedio</span><span class="si-winner-net"><span>Instagram</span> · 229</span></div>
+          <div class="si-winner-why">Al tener la audiencia más grande y fiel, genera más espacio de debate e interacción directa en cada publicación.</div>
+        </div>
+        <div class="si-winner">
+          <div class="si-winner-top"><span class="si-winner-label">Más compartidos promedio</span><span class="si-winner-net"><span>TikTok</span> · 139</span></div>
+          <div class="si-winner-why">TikTok concentra una audiencia más joven (Gen Z), que suele reenviar contenido entre chats y otras cuentas con mucha más frecuencia que en otras plataformas.</div>
+        </div>
+        <div class="si-winner">
+          <div class="si-winner-top"><span class="si-winner-label">Más guardados promedio</span><span class="si-winner-net"><span>TikTok</span> · 93</span></div>
+          <div class="si-winner-why">Coherente con el comportamiento de scrolleo rápido de TikTok: los usuarios guardan contenido para volver a verlo después, algo menos habitual en Instagram o Facebook.</div>
+        </div>
+        <div class="si-winner">
+          <div class="si-winner-top"><span class="si-winner-label">Más visualizaciones promedio</span><span class="si-winner-net"><span>Instagram</span> · 124,2k</span></div>
+          <div class="si-winner-why">El alcance algorítmico de Instagram (Reels + Explorar) sumado a su base de seguidores más grande potencia la cantidad de vistas por publicación.</div>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
 
